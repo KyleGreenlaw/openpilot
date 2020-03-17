@@ -4,9 +4,12 @@ from selfdrive.config import Conversions as CV
 from selfdrive.controls.lib.drive_helpers import EventTypes as ET, create_event
 from selfdrive.controls.lib.vehicle_model import VehicleModel
 from selfdrive.car.hyundai.carstate import CarState, get_can_parser, get_can2_parser, get_camera_parser
-from selfdrive.car.hyundai.values import Ecu, ECU_FINGERPRINT, get_hud_alerts, CAR, FINGERPRINTS
+from selfdrive.car.hyundai.values import Ecu, ECU_FINGERPRINT, CAR, FINGERPRINTS
 from selfdrive.car import STD_CARGO_KG, scale_rot_inertia, scale_tire_stiffness, is_ecu_disconnected, gen_empty_fingerprint
 from selfdrive.car.interfaces import CarInterfaceBase
+
+GearShifter = car.CarState.GearShifter
+ButtonType = car.CarState.ButtonEvent.Type
 
 class CarInterface(CarInterfaceBase):
   def __init__(self, CP, CarController):
@@ -35,13 +38,14 @@ class CarInterface(CarInterfaceBase):
 
   @staticmethod
   def get_params(candidate, fingerprint=gen_empty_fingerprint(), has_relay=False, car_fw=[]):
-    ret = CarInterfaceBase.get_std_params(candidate, fingerprint, has_relay)
+
+    ret = car.CarParams.new_message()
 
     ret.carName = "hyundai"
     ret.carFingerprint = candidate
     ret.isPandaBlack = has_relay
     ret.safetyModel = car.CarParams.SafetyModel.hyundai
-    ret.radarOffCan = True
+    ret.enableCruise = True  # stock acc
 
     ret.steerActuatorDelay = 0.26  # Default delay
     ret.steerRateCost = 0.5
@@ -195,7 +199,9 @@ class CarInterface(CarInterfaceBase):
 
     return ret
 
+  # returns a car.CarState
   def update(self, c, can_strings):
+    # ******************* do can recv *******************
     self.cp.update_strings(can_strings)
     self.cp2.update_strings(can_strings)
     self.cp_cam.update_strings(can_strings)
@@ -255,14 +261,26 @@ class CarInterface(CarInterfaceBase):
     ret.lcaRight = self.CS.lca_right != 0
 
     # TODO: button presses
-    ret.buttonEvents = []
+    buttonEvents = []
 
-    events = self.create_common_events(ret)
+    if self.CS.left_blinker_on != self.CS.prev_left_blinker_on:
+      be = car.CarState.ButtonEvent.new_message()
+      be.type = ButtonType.leftBlinker
+      be.pressed = self.CS.left_blinker_on != 0
+      buttonEvents.append(be)
 
-    if ret.cruiseState.enabled and not self.cruise_enabled_prev:
-      events.append(create_event('pcmEnable', [ET.ENABLE]))
-    elif not ret.cruiseState.enabled:
-      events.append(create_event('pcmDisable', [ET.USER_DISABLE]))
+    if self.CS.right_blinker_on != self.CS.prev_right_blinker_on:
+      be = car.CarState.ButtonEvent.new_message()
+      be.type = ButtonType.rightBlinker
+      be.pressed = self.CS.right_blinker_on != 0
+      buttonEvents.append(be)
+
+    ret.buttonEvents = buttonEvents
+    ret.leftBlinker = bool(self.CS.left_blinker_on)
+    ret.rightBlinker = bool(self.CS.right_blinker_on)
+
+    ret.doorOpen = not self.CS.door_all_closed
+    ret.seatbeltUnlatched = not self.CS.seatbelt
 
     # low speed steer alert hysteresis logic (only for cars with steer cut off above 10 m/s)
     if ret.vEgo < (self.CP.minSteerSpeed + 0.2) and self.CP.minSteerSpeed > 10.:
@@ -323,8 +341,7 @@ class CarInterface(CarInterfaceBase):
     self.brake_pressed_prev = ret.brakePressed
     self.cruise_enabled_prev = ret.cruiseState.enabled
 
-    self.CS.out = ret.as_reader()
-    return self.CS.out
+    return ret.as_reader()
 
   def apply(self, c):
     can_sends = self.CC.update(c.enabled, self.CS, self.frame, c.actuators,
