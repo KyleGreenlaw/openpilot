@@ -350,15 +350,9 @@ class CarState(CarStateBase):
     if (cp.vl["TCS13"]["DriverOverride"] == 0 and cp.vl["TCS13"]['ACC_REQ'] == 1):
       self.pedal_gas = 0
     else:
-      ret.cruiseState.speed = 0
+      self.pedal_gas = cp.vl["EMS12"]['TPS']
+    self.car_gas = cp.vl["EMS12"]['TPS']
 
-    ret.brake = 0  # FIXME
-    ret.brakePressed = cp.vl["TCS13"]['DriverBraking'] != 0
-    ret.brakeLights = ret.brakePressed
-    ret.gas = cp.vl["EMS12"]['PV_AV_CAN'] / 100
-    ret.gasPressed = cp.vl["EMS16"]["CF_Ems_AclAct"] != 0
-    ret.espDisabled = cp.vl["TCS15"]['ESC_Off_Step'] != 0
- 
     # Gear Selection via Cluster - For those Kia/Hyundai which are not fully discovered, we can use the Cluster Indicator for Gear Selection, as this seems to be standard over all cars, but is not the preferred method.
     if self.car_fingerprint in FEATURES["use_cluster_gears"]:
       if cp.vl["CLU15"]["CF_Clu_InhibitD"] == 1:
