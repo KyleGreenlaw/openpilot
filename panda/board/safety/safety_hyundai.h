@@ -17,7 +17,6 @@ AddrCheckStruct hyundai_rx_checks[] = {
   {.addr = {916}, .bus = 0, .expected_timestep = 10000U},
   {.addr = {1057}, .bus = 0, .expected_timestep = 20000U},
 };
-
 const int HYUNDAI_RX_CHECK_LEN = sizeof(hyundai_rx_checks) / sizeof(hyundai_rx_checks[0]);
 
 int hyundai_rt_torque_last = 0;
@@ -99,7 +98,20 @@ static int hyundai_rx_hook(CAN_FIFOMailBox_TypeDef *to_push) {
       hyundai_cruise_engaged_last = cruise_engaged;
     }
     // TODO: check gas pressed
+    if (addr == 902) {
+      hyundai_speed = GET_BYTES_04(to_push) & 0x3FFF;  // FL
+      hyundai_speed += (GET_BYTES_48(to_push) >> 16) & 0x3FFF;  // RL
+      hyundai_speed /= 2;
+    }
 
+    // exit controls on rising edge of brake press
+    if (addr == 916) {
+      bool brake_pressed = (GET_BYTE(to_push, 6) >> 7) != 0;
+      if (brake_pressed && (!brake_pressed_prev || (hyundai_speed > HYUNDAI_STANDSTILL_THRSLD))) {
+        controls_allowed = 0;
+      }
+      brake_pressed_prev = brake_pressed;
+    }
     // check if stock camera ECU is on bus 0
     if ((safety_mode_cnt > RELAY_TRNS_TIMEOUT) && (addr == 832)) {
       relay_malfunction = true;
