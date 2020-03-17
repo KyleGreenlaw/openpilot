@@ -297,7 +297,6 @@ class CarState(CarStateBase):
 
     # update prevs, update must run once per Loop
 
-
     self.door_all_closed = True
     self.seatbelt = cp.vl["CGW1"]['CF_Gway_DrvSeatBeltSw']
 
@@ -409,6 +408,9 @@ class CarState(CarStateBase):
     self.lca_state = cp.vl["LCA11"]["CF_Lca_Stat"]
     self.lca_left = cp.vl["LCA11"]["CF_Lca_IndLeft"]
     self.lca_right = cp.vl["LCA11"]["CF_Lca_IndRight"]
+	
+    self.prev_left_blinker_on = self.left_blinker_on
+    self.prev_right_blinker_on = self.right_blinker_on
 
     # save the entire LKAS11, CLU11, SCC12 and MDPS12
     self.lkas11 = cp_cam.vl["LKAS11"]
