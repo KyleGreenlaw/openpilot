@@ -143,7 +143,7 @@ class CarInterface(CarInterfaceBase):
       ret.lateralTuning.pid.kiBP, ret.lateralTuning.pid.kpBP = [[0.], [0.]]
       ret.lateralTuning.pid.kpV, ret.lateralTuning.pid.kiV = [[0.13], [0.009]]
       ret.minSteerSpeed = 32 * CV.MPH_TO_MS
-      ret.steerRateCost = 0.8 
+      ret.steerRateCost = 0.8
     elif candidate == CAR.KIA_FORTE:
       ret.lateralTuning.pid.kf = 0.00005
       ret.mass = 3558. * CV.LB_TO_KG

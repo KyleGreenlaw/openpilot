@@ -40,6 +40,7 @@ DESIRES = {
   },
 }
 
+
 def calc_states_after_delay(states, v_ego, steer_angle, curvature_factor, steer_ratio, delay):
   states[0].x = v_ego * delay
   states[0].psi = v_ego * curvature_factor * math.radians(steer_angle) / steer_ratio * delay
@@ -59,6 +60,7 @@ class PathPlanner():
     self.lane_change_state = LaneChangeState.off
     self.lane_change_direction = LaneChangeDirection.none
     self.lane_change_timer = 0.0
+    self.lane_change_ll_prob = 1.0
     self.prev_one_blinker = False
     self.pre_auto_LCA_timer = 0.0
     self.lane_change_BSM = LaneChangeBSM.off
@@ -118,11 +120,11 @@ class PathPlanner():
       if self.lane_change_direction == LaneChangeDirection.left:
         torque_applied = sm['carState'].steeringTorque > 0 and sm['carState'].steeringPressed
         if CP.autoLcaEnabled and 2.5 > self.pre_auto_LCA_timer > 2.0 and not lca_left:
-          torque_applied = True # Enable auto LCA only once after 2 sec 
+          torque_applied = True # Enable auto LCA only once after 2 sec
       else:
         torque_applied = sm['carState'].steeringTorque < 0 and sm['carState'].steeringPressed
         if CP.autoLcaEnabled and 2.5 > self.pre_auto_LCA_timer > 2.0 and not lca_right:
-          torque_applied = True # Enable auto LCA only once after 2 sec 
+          torque_applied = True # Enable auto LCA only once after 2 sec
 
       lane_change_prob = self.LP.l_lane_change_prob + self.LP.r_lane_change_prob
 
@@ -134,7 +136,7 @@ class PathPlanner():
       # pre
       elif self.lane_change_state == LaneChangeState.preLaneChange:
         if not one_blinker or below_lane_change_speed:
-          self.lane_change_state = LaneChangeState.off   
+          self.lane_change_state = LaneChangeState.off
         elif torque_applied:
           if self.prev_torque_applied or self.lane_change_direction == LaneChangeDirection.left and not lca_left or \
                   self.lane_change_direction == LaneChangeDirection.right and not lca_right:
@@ -239,8 +241,7 @@ class PathPlanner():
       self.solution_invalid_cnt = 0
     plan_solution_valid = self.solution_invalid_cnt < 2
 
-    plan_send = messaging.new_message()
-    plan_send.init('pathPlan')
+    plan_send = messaging.new_message('pathPlan')
     plan_send.valid = sm.all_alive_and_valid(service_list=['carState', 'controlsState', 'liveParameters', 'model'])
     plan_send.pathPlan.laneWidth = float(self.LP.lane_width)
     plan_send.pathPlan.dPoly = [float(x) for x in self.LP.d_poly]
@@ -265,8 +266,7 @@ class PathPlanner():
     pm.send('pathPlan', plan_send)
 
     if LOG_MPC:
-      dat = messaging.new_message()
-      dat.init('liveMpc')
+      dat = messaging.new_message('liveMpc')
       dat.liveMpc.x = list(self.mpc_solution[0].x)
       dat.liveMpc.y = list(self.mpc_solution[0].y)
       dat.liveMpc.psi = list(self.mpc_solution[0].psi)
