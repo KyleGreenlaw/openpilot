@@ -45,7 +45,7 @@ class CarInterface(CarInterfaceBase):
     ret.carFingerprint = candidate
     ret.isPandaBlack = has_relay
     ret.safetyModel = car.CarParams.SafetyModel.hyundai
-    ret.enableCruise = False  # stock acc
+    ret.enableCruise = True  # stock acc
 
     ret.steerActuatorDelay = 0.1  # Default delay
     ret.steerRateCost = 0.5
@@ -203,7 +203,7 @@ class CarInterface(CarInterfaceBase):
     # ignore CAN2 address if L-CAN on the same BUS
     ret.mdpsBus = 1 if 593 in fingerprint[1] and 1296 not in fingerprint[1] else 0
     ret.sasBus = 1 if 688 in fingerprint[1] and 1296 not in fingerprint[1] else 0
-    ret.sccBus = -1 if 1056 in fingerprint[0] else 1 if 1056 in fingerprint[1] and 1296 not in fingerprint[1] \
+    ret.sccBus = 1 if 1056 in fingerprint[0] else 1 if 1056 in fingerprint[1] and 1296 not in fingerprint[1] \
                                                                       else 2 if 1056 in fingerprint[2] else -1  
     ret.autoLcaEnabled = 0
 
