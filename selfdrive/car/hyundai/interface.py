@@ -45,7 +45,7 @@ class CarInterface(CarInterfaceBase):
     ret.carFingerprint = candidate
     ret.isPandaBlack = has_relay
     ret.safetyModel = car.CarParams.SafetyModel.hyundai
-    ret.enableCruise = True  # stock acc
+    ret.enableCruise = False  # stock acc
 
     ret.steerActuatorDelay = 0.1  # Default delay
     ret.steerRateCost = 0.5
