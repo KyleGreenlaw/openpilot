@@ -316,9 +316,9 @@ class CarState(CarStateBase):
     self.esp_disabled = cp.vl["TCS15"]['ESC_Off_Step']
     self.park_brake = cp.vl["CGW1"]['CF_Gway_ParkBrakeSw']
 
-    self.main_on = (cp.vl["SCC11"]["MainMode_ACC"] != 0) if not self.no_radar else \
-                                             7 > cp_cam.vl["LKAS11"]["CF_Lkas_LdwsSysState"] != 0
-    self.acc_active = (cp_scc.vl["SCC12"]['ACCMode'] != 0) if not self.no_radar else \
+   self.main_on = 7 > cp_cam.vl["LKAS11"]["CF_Lkas_LdwsSysState"] != 0 if not self.no_radar else cp.vl['EMS16']['CRUISE_LAMP_M']
+
+    self.acc_active = 7 > cp_cam.vl["LKAS11"]["CF_Lkas_LdwsSysState"] != 0 if not self.no_radar else \
                                        (cp.vl["LVR12"]['CF_Lvr_CruiseSet'] != 0)
     self.pcm_acc_status = int(self.acc_active)
 
