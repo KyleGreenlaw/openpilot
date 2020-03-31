@@ -101,11 +101,7 @@ def get_can_parser(CP):
   if CP.sccBus == -1 or CP.carFingerprint in FEATURES["use_scc_emulation"]:
     signals += [
       ("CRUISE_LAMP_M", "EMS16", 0),
-      ("CF_Clu_CruiseSwMain", "CLU11", 0),
       ("CF_Lvr_CruiseSet", "LVR12", 0),
-    ]
-    checks += [
-    ("CLU11", 50),
     ]
   if not CP.sccBus:
     if CP.carFingerprint not in FEATURES["use_scc_emulation"]:
@@ -317,7 +313,7 @@ class CarState(CarStateBase):
     self.park_brake = cp.vl["CGW1"]['CF_Gway_ParkBrakeSw']
 
     self.main_on = 1
-    self.acc_active =1
+    self.acc_active = 1
     self.pcm_acc_status = int(self.acc_active)
 
     self.v_wheel_fl = cp.vl["WHL_SPD11"]['WHL_SPD_FL'] * CV.KPH_TO_MS
