@@ -105,6 +105,9 @@ def get_can_parser(CP):
       ("VSetDis", "SCC11", 0),
       ("CF_Lvr_CruiseSet", "LVR12", 0),
     ]
+    checks += [
+      ("SCC11", 50),
+    ]
   if not CP.sccBus:
     if CP.carFingerprint not in FEATURES["use_scc_emulation"]:
       signals += [
