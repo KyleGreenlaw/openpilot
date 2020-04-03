@@ -75,7 +75,7 @@ class CarInterface(CarInterfaceBase):
       ret.mass = 1411. + STD_CARGO_KG  # Spec Elantra GT Sport
       ret.wheelbase = 2.65  # Spec Elantra GT Sport
       ret.steerRatio = 15.4  # Spec Elantra GT Sport
-      tire_stiffness_factor = 0.5
+      tire_stiffness_factor = 0.7
       ret.lateralTuning.pid.kiBP, ret.lateralTuning.pid.kpBP = [[0.], [0.]]
       ret.lateralTuning.pid.kpV, ret.lateralTuning.pid.kiV = [[0.19], [0.05]]
       ret.minSteerSpeed = 32 * CV.MPH_TO_MS
