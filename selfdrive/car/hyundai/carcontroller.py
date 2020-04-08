@@ -161,6 +161,7 @@ class CarController():
     if ((CS.scc_bus and self.longcontrol) or self.sccEmulation) and frame % 2: # send scc12 to car if SCC not on bus 0 and longcontrol enabled
       if self.sccEmulation:
         can_sends.append(create_scc11(self.packer, enabled, self.scc11_cnt))
+        can_sends.append(create_clu11(self.packer, CS.scc_bus, CS.clu11, Buttons.SET_DECEL, enabled_speed, self.clu11_cnt))
         self.scc11_cnt += 1
         can_sends.append(create_scc14(self.packer, enabled))
       can_sends.append(create_scc12(self.packer, apply_accel, enabled, self.scc12_cnt, self.sccEmulation, CS.scc12))
