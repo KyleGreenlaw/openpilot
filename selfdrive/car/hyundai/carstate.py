@@ -371,7 +371,7 @@ class CarState(CarStateBase):
     self.steer_torque_driver = cp_mdps.vl["MDPS12"]['CR_Mdps_StrColTq']
     self.steer_torque_motor = cp_mdps.vl["MDPS12"]['CR_Mdps_OutTq']
     self.stopped = cp_scc.vl["SCC11"]['SCCInfoDisplay'] == 4. if not self.no_radar else False
-    self.lead_distance = cp_scc.vl["SCC11"]['ACC_ObjDist'] if not self.no_radar else 0
+    self.lead_distance = cp_scc.vl["SCC11"]['ACC_ObjDist'] if not self.no_radar else 40
 
     self.user_brake = 0
 
