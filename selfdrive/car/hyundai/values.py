@@ -145,7 +145,7 @@ FEATURES = {
   "use_cluster_gears": [CAR.ELANTRA, CAR.KONA, CAR.ELANTRA_GT_I30],     # Use Cluster for Gear Selection, rather than Transmission
   "use_tcu_gears": [CAR.KIA_OPTIMA],                                    # Use TCU Message for Gear Selection
   "use_elect_gears": [CAR.KIA_OPTIMA_H, CAR.IONIQ_EV_LTD, CAR.KONA_EV], # Use TCU Message for Gear Selection
-  "use_scc_emulation": [CAR.KIA_FORTE],
+  "use_scc_emulation": [CAR.KIA_FORTE], CAR.ELANTRA_GT_I30],
 }
 
 DBC = {
@@ -164,7 +164,7 @@ DBC = {
   CAR.KONA: dbc_dict('hyundai_kia_generic', None),
   CAR.KONA_EV: dbc_dict('hyundai_kia_generic', None),
   CAR.KIA_FORTE: dbc_dict('hyundai_kia_scc_emulation', None),
-  CAR.ELANTRA_GT_I30: dbc_dict('hyundai_kia_generic', None),
+  CAR.ELANTRA_GT_I30: dbc_dict('hyundai_kia_scc_emulation', None),
   CAR.KIA_SPORTAGE: dbc_dict('hyundai_kia_generic', None),
 }
 
