@@ -338,10 +338,8 @@ class CarState(CarStateBase):
     self.esp_disabled = cp.vl["TCS15"]['ESC_Off_Step']
     self.park_brake = cp.vl["CGW1"]['CF_Gway_ParkBrakeSw']
 
-    self.main_on = (cp_scc.vl["SCC11"]["MainMode_ACC"] != 0) if not self.no_radar else \
-                                            cp.vl['EMS16']['CRUISE_LAMP_M']
-    self.acc_active = (cp_scc.vl["SCC12"]['ACCMode'] != 0) if not self.no_radar else \
-                                      (cp.vl["LVR12"]['CF_Lvr_CruiseSet'] != 0)
+    self.main_on = 7 > cp_cam.vl["LKAS11"]["CF_Lkas_LdwsSysState"] != 0
+    self.acc_active =1
     self.pcm_acc_status = int(self.acc_active)
 
     self.v_wheel_fl = cp.vl["WHL_SPD11"]['WHL_SPD_FL'] * CV.KPH_TO_MS
@@ -435,7 +433,7 @@ class CarState(CarStateBase):
       else:
         self.gear_shifter = GearShifter.unknown
 
-    self.lkas_button_on = 7 > cp_cam.vl["LKAS11"]["CF_Lkas_LdwsSysState"] != 0
+    self.lkas_button_on = 1
     self.lkas_error = cp_cam.vl["LKAS11"]["CF_Lkas_LdwsSysState"] == 7
 
     # Blind Spot Detection and Lane Change Assist signals
