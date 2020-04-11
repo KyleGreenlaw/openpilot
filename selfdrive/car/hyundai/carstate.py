@@ -378,7 +378,7 @@ class CarState(CarStateBase):
     self.brake_pressed = 0
     self.brake_lights = bool(cp.vl["TCS13"]['BrakeLight'] or self.brake_pressed)
     if (cp.vl["TCS13"]["DriverOverride"] == 0 and cp.vl["TCS13"]['ACC_REQ'] == 1):
-      self.pedal_gas = 1
+      self.pedal_gas = 0
     else:
       self.pedal_gas = cp.vl["EMS12"]['TPS']
     self.car_gas = cp.vl["EMS12"]['TPS']
@@ -433,7 +433,7 @@ class CarState(CarStateBase):
       else:
         self.gear_shifter = GearShifter.unknown
 
-    self.lkas_button_on = 1
+
     self.lkas_error = cp_cam.vl["LKAS11"]["CF_Lkas_LdwsSysState"] == 7
 
     # Blind Spot Detection and Lane Change Assist signals
