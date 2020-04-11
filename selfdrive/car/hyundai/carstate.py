@@ -375,10 +375,10 @@ class CarState(CarStateBase):
 
     self.user_brake = 0
 
-    self.brake_pressed = cp.vl["TCS13"]['DriverBraking']
+    self.brake_pressed = 0
     self.brake_lights = bool(cp.vl["TCS13"]['BrakeLight'] or self.brake_pressed)
     if (cp.vl["TCS13"]["DriverOverride"] == 0 and cp.vl["TCS13"]['ACC_REQ'] == 1):
-      self.pedal_gas = 0
+      self.pedal_gas = 1
     else:
       self.pedal_gas = cp.vl["EMS12"]['TPS']
     self.car_gas = cp.vl["EMS12"]['TPS']
