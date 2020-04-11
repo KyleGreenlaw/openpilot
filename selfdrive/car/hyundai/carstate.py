@@ -338,7 +338,7 @@ class CarState(CarStateBase):
     self.esp_disabled = cp.vl["TCS15"]['ESC_Off_Step']
     self.park_brake = cp.vl["CGW1"]['CF_Gway_ParkBrakeSw']
 
-    self.main_on = 7 > cp_cam.vl["LKAS11"]["CF_Lkas_LdwsSysState"]
+    self.main_on = 7 > cp_cam.vl["LKAS11"]["CF_Lkas_LdwsSysState"] !=0
     self.acc_active =1
     self.pcm_acc_status = int(self.acc_active)
 
