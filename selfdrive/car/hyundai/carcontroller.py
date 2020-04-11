@@ -154,7 +154,10 @@ class CarController():
                                    CS.lkas11, hud_alert, lane_visible, left_lane_depart, right_lane_depart, keep_stock=True))
     if CS.mdps_bus: # send clu11 to mdps if it is not on bus 0
       can_sends.append(create_clu11(self.packer, CS.mdps_bus, CS.clu11, Buttons.NONE, enabled_speed, self.clu11_cnt))
-   
+
+    if CS.scc_bus: # send clu11 to mdps if it is not on bus 0
+      can_sends.append(create_clu11(self.packer, CS.scc_bus, CS.clu11, Buttons.SET_DECEL, enabled_speed, self.clu11_cnt))
+
     if pcm_cancel_cmd and self.sccEmulation:
       can_sends.append(create_clu11(self.packer, CS.scc_bus, CS.clu11, Buttons.CANCEL, clu11_speed, self.clu11_cnt))
     else: # send mdps12 to LKAS to prevent LKAS error if no cancel cmd
