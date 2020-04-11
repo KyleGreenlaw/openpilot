@@ -322,10 +322,9 @@ class CarInterface(CarInterfaceBase):
     if ret.cruiseState.enabled and not self.cruise_enabled_prev:
       events.append(create_event('pcmEnable', [ET.ENABLE]))
     elif not ret.cruiseState.enabled:
-      events.append(create_event('pcmDisable', [ET.USER_ USER_DISABLE]))
+      events.append(create_event('pcmDisable', [ET.USER_DISABLE]))
 
-
-    if self.low_speed_alert and not self.CS.mdps_bus :
+    if self.low_speed_alert and not self.CS.mdps_bus:
       events.append(create_event('belowSteerSpeed', [ET.WARNING]))
     if self.turning_indicator_alert:
       events.append(create_event('turningIndicatorOn', [ET.WARNING]))
