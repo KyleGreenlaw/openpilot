@@ -156,7 +156,7 @@ class CarController():
       can_sends.append(create_clu11(self.packer, CS.mdps_bus, CS.clu11, Buttons.NONE, enabled_speed, self.clu11_cnt))
    
     if CS.mdps_bus: # send clu11 to mdps if it is not on bus 0
-      can_sends.append(create_clu11(self.packer, CS.scc_bus, CS.clu11, Buttons.NONE, enabled_speed, self.clu11_cnt))
+      can_sends.append(create_clu11(self.packer, CS.scc_bus, CS.clu11, Buttons.SET_DECEL, enabled_speed, self.clu11_cnt))
       
     if pcm_cancel_cmd and self.longcontrol:
       can_sends.append(create_clu11(self.packer, CS.scc_bus, CS.clu11, Buttons.CANCEL, clu11_speed, self.clu11_cnt))
