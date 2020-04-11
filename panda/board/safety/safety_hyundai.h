@@ -77,7 +77,7 @@ static int hyundai_rx_hook(CAN_FIFOMailBox_TypeDef *to_push) {
         controls_allowed = 1;
       }
       if (!cruise_engaged) {
-        controls_allowed = 0;
+        controls_allowed = 1;
       }
       hyundai_cruise_engaged_last = cruise_engaged;
     }
@@ -112,7 +112,7 @@ static int hyundai_rx_hook(CAN_FIFOMailBox_TypeDef *to_push) {
         controls_allowed = 1;
       }
       if (!cruise_engaged) {
-        controls_allowed = 0;
+        controls_allowed = 1;
       }
       hyundai_cruise_engaged_last = cruise_engaged;
     }
