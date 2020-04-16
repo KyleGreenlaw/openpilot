@@ -101,54 +101,29 @@ def create_scc11(packer, bus, enabled, count):
   return packer.make_can_msg("SCC11", bus, values)
 
 def create_scc12(packer, bus, apply_accel, enabled, cnt, sccEmulation, scc12):
-  if sccEmulation:
-    values = {
-      "CF_VSM_Prefill": 0,
-      "CF_VSM_DecCmdAct": 0,
-      "CF_VSM_HBACmd": 0,
-      "CF_VSM_Warn": 0,
-      "CF_VSM_Stat": 0,
-      "CF_VSM_BeltCmd": 0,
-      "ACCFailInfo": 0,
-      "ACCMode": enabled,
-      "StopReq": 0,
-      "CR_VSM_DecCmd": 0,
-      "aReqMax": apply_accel+3.0 if enabled else 0,
-      "TakeOverReq": 0,
-      "PreFill": 0,
-      "aReqMin": apply_accel+3.0 if enabled else -10.23,
-      "CF_VSM_ConfMode": 0,
-      "AEB_Failinfo": 0,
-      "AEB_Status": 0,
-      "AEB_CmdAct": 0,
-      "AEB_StopReq": 0,
-      "CR_VSM_Alive": cnt,
-      "CR_VSM_ChkSum": 0,
-    }
-  else:
-    values = {
-      "CF_VSM_Prefill": scc12["CF_VSM_Prefill"],
-      "CF_VSM_DecCmdAct": scc12["CF_VSM_DecCmdAct"],
-      "CF_VSM_HBACmd": scc12["CF_VSM_HBACmd"],
-      "CF_VSM_Warn": scc12["CF_VSM_Warn"],
-      "CF_VSM_Stat": scc12["CF_VSM_Stat"],
-      "CF_VSM_BeltCmd": scc12["CF_VSM_BeltCmd"],
-      "ACCFailInfo": scc12["ACCFailInfo"],
-      "ACCMode": scc12["ACCMode"],
-      "StopReq": scc12["StopReq"],
-      "CR_VSM_DecCmd": scc12["CR_VSM_DecCmd"],
-      "aReqMax": apply_accel if enabled and scc12["ACCMode"] == 1 else scc12["aReqMax"],
-      "TakeOverReq": scc12["TakeOverReq"],
-      "PreFill": scc12["PreFill"],
-      "aReqMin": apply_accel if enabled and scc12["ACCMode"] == 1 else scc12["aReqMin"],
-      "CF_VSM_ConfMode": scc12["CF_VSM_ConfMode"],
-      "AEB_Failinfo": scc12["AEB_Failinfo"],
-      "AEB_Status": scc12["AEB_Status"],
-      "AEB_CmdAct": scc12["AEB_CmdAct"],
-      "AEB_StopReq": scc12["AEB_StopReq"],
-      "CR_VSM_Alive": cnt,
-      "CR_VSM_ChkSum": 0,
-    }
+  values = {
+    "CF_VSM_Prefill": scc12["CF_VSM_Prefill"],
+    "CF_VSM_DecCmdAct": scc12["CF_VSM_DecCmdAct"],
+    "CF_VSM_HBACmd": scc12["CF_VSM_HBACmd"],
+    "CF_VSM_Warn": scc12["CF_VSM_Warn"],
+    "CF_VSM_Stat": scc12["CF_VSM_Stat"],
+    "CF_VSM_BeltCmd": scc12["CF_VSM_BeltCmd"],
+    "ACCFailInfo": scc12["ACCFailInfo"],
+    "ACCMode": scc12["ACCMode"],
+    "StopReq": scc12["StopReq"],
+    "CR_VSM_DecCmd": scc12["CR_VSM_DecCmd"],
+    "aReqMax": apply_accel if enabled and scc12["ACCMode"] == 1 else scc12["aReqMax"],
+    "TakeOverReq": scc12["TakeOverReq"],
+    "PreFill": scc12["PreFill"],
+    "aReqMin": apply_accel if enabled and scc12["ACCMode"] == 1 else scc12["aReqMin"],
+    "CF_VSM_ConfMode": scc12["CF_VSM_ConfMode"],
+    "AEB_Failinfo": scc12["AEB_Failinfo"],
+    "AEB_Status": scc12["AEB_Status"],
+    "AEB_CmdAct": scc12["AEB_CmdAct"],
+    "AEB_StopReq": scc12["AEB_StopReq"],
+    "CR_VSM_Alive": cnt,
+    "CR_VSM_ChkSum": 0,
+  }
   dat = packer.make_can_msg("SCC12", bus, values)[2]
   values["CR_VSM_ChkSum"] = 16 - sum([sum(divmod(i, 16)) for i in dat]) % 16
 
