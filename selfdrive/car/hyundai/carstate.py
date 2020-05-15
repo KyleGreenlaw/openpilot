@@ -232,6 +232,9 @@ class CarState(CarStateBase):
         ("Brake_Pedal_Pos", "E_EMS11", 0)
         ("Accel_Pedal_Pos", "E_EMS11", 0)
       ]
+      checks += [
+        ("E_EMS11", 100)
+      ]
     else:
       signals += [
         ("CF_Lvr_Gear","LVR12",0)
