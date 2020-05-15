@@ -56,7 +56,7 @@ class CarState(CarStateBase):
 
     #TODO: find pedal signal for EV/HYBRID Cars
     if self.CP.carFingerprint in FEATURES["2020_electric"]:
-      ret.gas = cp.vl["E_EMS11"]['E_EMS11'] / 100
+      ret.gas = cp.vl["E_EMS11"]['Accel_Pedal_Pos'] / 100
       ret.gasPressed = bool(cp.vl["E_EMS11"]["Accel_Pedal_Pos"]) 
     else:
       ret.gas = cp.vl["EMS12"]['PV_AV_CAN'] / 100
