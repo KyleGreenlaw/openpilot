@@ -58,9 +58,9 @@ class CarState(CarStateBase):
     if self.CP.carFingerprint in FEATURES["2020_electric"]:
       ret.gas = cp.vl["E_EMS11"]['Accel_Pedal_Pos'] / 100
       if cp.vl["E_EMS11"]["Accel_Pedal_Pos"] != 0:
-        ret.gasPressed = true
+        ret.gasPressed = 1
       else: 
-        ret.gasPressed = false
+        ret.gasPressed = 0
     else:
       ret.gas = cp.vl["EMS12"]['PV_AV_CAN'] / 100
       ret.gasPressed = bool(cp.vl["EMS16"]["CF_Ems_AclAct"])
