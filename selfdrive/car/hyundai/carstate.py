@@ -233,7 +233,7 @@ class CarState(CarStateBase):
         ("Accel_Pedal_Pos", "E_EMS11", 0)
       ]
       checks += [
-        ("E_EMS11", 20)
+        ("E_EMS11", 10)
       ]
     else:
       signals += [
