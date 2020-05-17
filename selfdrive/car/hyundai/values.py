@@ -139,7 +139,7 @@ ECU_FINGERPRINT = {
 }
 
 CHECKSUM = {
-  "crc8": [CAR.SANTA_FE, CAR.SONATA, CAR.PALISADE],
+  "crc8": [CAR.SANTA_FE, CAR.SONATA, CAR.PALISADE, CAR.SONATA_H],
   "6B": [CAR.KIA_SORENTO, CAR.HYUNDAI_GENESIS],
 }
 
@@ -147,7 +147,7 @@ FEATURES = {
   "use_cluster_gears": [CAR.ELANTRA, CAR.KONA, CAR.ELANTRA_GT_I30],     # Use Cluster for Gear Selection, rather than Transmission
   "use_tcu_gears": [CAR.KIA_OPTIMA],                                    # Use TCU Message for Gear Selection
   "use_elect_gears": [CAR.KIA_OPTIMA_H, CAR.IONIQ_EV_LTD, CAR.KONA_EV, CAR.IONIQ_EV_2020], # Use TCU Message for Gear Selection
-  "2020_electric": [CAR.IONIQ_EV_2020],
+  "2020_electric": [CAR.IONIQ_EV_2020, CAR.SONATA_H, CAR.IONIQ_EV_LTD],
 }
 
 DBC = {
@@ -169,7 +169,7 @@ DBC = {
   CAR.SONATA: dbc_dict('hyundai_kia_generic', None),
   CAR.PALISADE: dbc_dict('hyundai_kia_generic', None),
   CAR.IONIQ_EV_2020: dbc_dict('hyundai_kia_generic', None),
-
+  CAR.SONATA_H: dbc_dict('hyundai_kia_generic', None),
 }
 
 STEER_THRESHOLD = 150
