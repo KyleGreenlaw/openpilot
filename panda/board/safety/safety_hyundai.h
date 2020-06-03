@@ -96,8 +96,10 @@ static int hyundai_rx_hook(CAN_FIFOMailBox_TypeDef *to_push) {
       int cruise_engaged = (GET_BYTES_04(to_push) >> 13) & 0x3;
       if (cruise_engaged && !cruise_engaged_prev) {
         controls_allowed = 1;
+        puts("  SCC w/ long control: controls allowed"); puts("\n");
       }
       if (!cruise_engaged) {
+        if (controls_allowed) {puts("  SCC w/ long control: controls not allowed"); puts("\n");}
         controls_allowed = 0;
       }
       cruise_engaged_prev = cruise_engaged;
@@ -108,8 +110,10 @@ static int hyundai_rx_hook(CAN_FIFOMailBox_TypeDef *to_push) {
       int cruise_engaged = GET_BYTES_04(to_push) & 0x1; // ACC main_on signal
       if (cruise_engaged && !cruise_engaged_prev) {
         controls_allowed = 1;
+        puts("  SCC w/o long control: controls allowed"); puts("\n");
       }
       if (!cruise_engaged) {
+        if (controls_allowed) {puts("  SCC w/o long control: controls not allowed"); puts("\n");}
         controls_allowed = 0;
       }
       cruise_engaged_prev = cruise_engaged;
@@ -120,8 +124,10 @@ static int hyundai_rx_hook(CAN_FIFOMailBox_TypeDef *to_push) {
       int cruise_engaged = (GET_BYTES_04(to_push) & 0xFF);
       if (cruise_engaged && !cruise_engaged_prev) {
         controls_allowed = 1;
+        puts("  non-SCC w/ long control: controls allowed"); puts("\n");
       }
       if (!cruise_engaged) {
+        if (controls_allowed) {puts("  non-SCC w/ long control: controls not allowed"); puts("\n");}
         controls_allowed = 0;
       }
       cruise_engaged_prev = cruise_engaged;
@@ -131,8 +137,10 @@ static int hyundai_rx_hook(CAN_FIFOMailBox_TypeDef *to_push) {
       int cruise_engaged = (GET_BYTES_04(to_push) >> 25 & 0x1); // ACC main_on signal
       if (cruise_engaged && !cruise_engaged_prev) {
         controls_allowed = 1;
+        puts("  non-SCC w/o long control: controls allowed"); puts("\n");
       }
       if (!cruise_engaged) {
+        if (controls_allowed) {puts("  non-SCC w/o long control: controls not allowed"); puts("\n");}
         controls_allowed = 0;
       }
       cruise_engaged_prev = cruise_engaged;
@@ -142,6 +150,7 @@ static int hyundai_rx_hook(CAN_FIFOMailBox_TypeDef *to_push) {
     if (addr == 608 && OP_SCC_live && bus == 0) {
       bool gas_pressed = (GET_BYTE(to_push, 7) >> 6) != 0;
       if (!unsafe_allow_gas && gas_pressed && !gas_pressed_prev) {
+        if (controls_allowed) {puts("  gas press w/ long control: controls not allowed"); puts("\n");}
         controls_allowed = 0;
       }
       gas_pressed_prev = gas_pressed;
@@ -159,6 +168,7 @@ static int hyundai_rx_hook(CAN_FIFOMailBox_TypeDef *to_push) {
     if (addr == 916 && OP_SCC_live && bus == 0) {
       bool brake_pressed = (GET_BYTE(to_push, 6) >> 7) != 0;
       if (brake_pressed && (!brake_pressed_prev || vehicle_moving)) {
+        if (controls_allowed) {puts("  brake press w/ long control: controls not allowed"); puts("\n");}
         controls_allowed = 0;
       }
       brake_pressed_prev = brake_pressed;
