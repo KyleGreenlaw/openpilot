@@ -252,8 +252,8 @@ class CarInterface(CarInterfaceBase):
     if ret.gearShifter == GearShifter.reverse:
       events.append(create_event('reverseGear', [ET.NO_ENTRY, ET.USER_DISABLE]))
     if ret.steerWarning or abs(ret.steeringAngle) > 90.:
-      events.append(create_event('steerTempUnavailable', [ET.NO_ENTRY, ET.WARNING]))
-
+      print("nope")
+      
     if ret.cruiseState.enabled and not self.CS.out.cruiseState.enabled:
       events.append(create_event('pcmEnable', [ET.ENABLE]))
     elif not ret.cruiseState.enabled:
