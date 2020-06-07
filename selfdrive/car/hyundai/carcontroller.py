@@ -66,7 +66,6 @@ def __init__(self, dbc_name, CP, VM):
     self.resume_cnt = 0
     self.last_resume_frame = 0
     self.last_lead_distance = 0
-    self.turning_signal_timer = 0
     self.lkas_button_on = True
     self.longcontrol = False #TODO: make auto
 
@@ -94,16 +93,6 @@ def __init__(self, dbc_name, CP, VM):
     if CS.out.vEgo < 16.7 and self.car_fingerprint == CAR.HYUNDAI_GENESIS and not CS.mdps_bus:
       lkas_active = 0
 
-    # Disable steering while turning blinker on and speed below 60 kph
-    if CS.out.leftBlinker or CS.out.rightBlinker:
-      if self.car_fingerprint not in [CAR.KIA_OPTIMA, CAR.KIA_OPTIMA_H]:
-        self.turning_signal_timer = 100  # Disable for 1.0 Seconds after blinker turned off
-      elif CS.left_blinker_flash or CS.right_blinker_flash: # Optima has blinker flash signal only
-        self.turning_signal_timer = 100
-    if self.turning_signal_timer and CS.out.vEgo < 16.7:
-      lkas_active = 0
-    if self.turning_signal_timer:
-      self.turning_signal_timer -= 1
     if not lkas_active:
       apply_steer = 0
 
