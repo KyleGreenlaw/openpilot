@@ -151,6 +151,7 @@ class CarState(CarStateBase):
 
   @staticmethod
   def get_can_parser(CP):
+
     signals = [
       # sig_name, sig_address, default
       ("WHL_SPD_FL", "WHL_SPD11", 0),
@@ -373,6 +374,7 @@ class CarState(CarStateBase):
 
   @staticmethod
   def get_cam_can_parser(CP):
+
     signals = [
       # sig_name, sig_address, default
       ("CF_Lkas_Bca_R", "LKAS11", 0),
@@ -393,40 +395,41 @@ class CarState(CarStateBase):
       ("CF_Lkas_FcwOpt_USM", "LKAS11", 0),
       ("CF_Lkas_LdwsOpt_USM", "LKAS11", 0)
     ]
+
     checks = []
     if CP.sccBus == 2:
       signals += [
-      ("MainMode_ACC", "SCC11", 0),
-      ("VSetDis", "SCC11", 0),
-      ("SCCInfoDisplay", "SCC11", 0),
-      ("ACC_ObjDist", "SCC11", 0),
-      ("TauGapSet", "SCC11", 0),
+        ("MainMode_ACC", "SCC11", 0),
+        ("VSetDis", "SCC11", 0),
+        ("SCCInfoDisplay", "SCC11", 0),
+        ("ACC_ObjDist", "SCC11", 0),
+        ("TauGapSet", "SCC11", 0),
 
-      ("ACCMode", "SCC12", 0),
-      ("CF_VSM_Prefill", "SCC12", 0),
-      ("CF_VSM_DecCmdAct", "SCC12", 0),
-      ("CF_VSM_HBACmd", "SCC12", 0),
-      ("CF_VSM_Warn", "SCC12", 0),
-      ("CF_VSM_Stat", "SCC12", 0),
-      ("CF_VSM_BeltCmd", "SCC12", 0),
-      ("ACCFailInfo", "SCC12", 0),
-      ("ACCMode", "SCC12", 0),
-      ("StopReq", "SCC12", 0),
-      ("CR_VSM_DecCmd", "SCC12", 0),
-      ("aReqMax", "SCC12", 0),
-      ("TakeOverReq", "SCC12", 0),
-      ("PreFill", "SCC12", 0),
-      ("aReqMin", "SCC12", 0),
-      ("CF_VSM_ConfMode", "SCC12", 0),
-      ("AEB_Failinfo", "SCC12", 0),
-      ("AEB_Status", "SCC12", 0),
-      ("AEB_CmdAct", "SCC12", 0),
-      ("AEB_StopReq", "SCC12", 0),
-      ("CR_VSM_Alive", "SCC12", 0),
-      ("CR_VSM_ChkSum", "SCC12", 0),
-    ]
-    checks += [
-      ("SCC11", 50),
-      ("SCC12", 50),
-    ]
+        ("ACCMode", "SCC12", 0),
+        ("CF_VSM_Prefill", "SCC12", 0),
+        ("CF_VSM_DecCmdAct", "SCC12", 0),
+        ("CF_VSM_HBACmd", "SCC12", 0),
+        ("CF_VSM_Warn", "SCC12", 0),
+        ("CF_VSM_Stat", "SCC12", 0),
+        ("CF_VSM_BeltCmd", "SCC12", 0),
+        ("ACCFailInfo", "SCC12", 0),
+        ("ACCMode", "SCC12", 0),
+        ("StopReq", "SCC12", 0),
+        ("CR_VSM_DecCmd", "SCC12", 0),
+        ("aReqMax", "SCC12", 0),
+        ("TakeOverReq", "SCC12", 0),
+        ("PreFill", "SCC12", 0),
+        ("aReqMin", "SCC12", 0),
+        ("CF_VSM_ConfMode", "SCC12", 0),
+        ("AEB_Failinfo", "SCC12", 0),
+        ("AEB_Status", "SCC12", 0),
+        ("AEB_CmdAct", "SCC12", 0),
+        ("AEB_StopReq", "SCC12", 0),
+        ("CR_VSM_Alive", "SCC12", 0),
+        ("CR_VSM_ChkSum", "SCC12", 0),
+      ]
+      checks += [
+        ("SCC11", 50),
+        ("SCC12", 50),
+      ]
     return CANParser(DBC[CP.carFingerprint]['pt'], signals, checks, 2)
