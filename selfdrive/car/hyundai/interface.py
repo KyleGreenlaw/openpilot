@@ -168,6 +168,8 @@ class CarInterface(CarInterfaceBase):
 
     ret = self.CS.update(self.cp, self.cp2, self.cp_cam)
     ret.canValid = self.cp.can_valid and self.cp2.can_valid and self.cp_cam.can_valid
+    
+    ret.cruiseState.enabled = ret.cruiseState.available if not self.CC.longcontrol else ret.cruiseState.enabled
 
     # TODO: button presses
     buttonEvents = []
@@ -193,7 +195,6 @@ class CarInterface(CarInterfaceBase):
       be.pressed = bool(self.CS.cruise_main_button)
       buttonEvents.append(be)
     ret.buttonEvents = buttonEvents
-
 
     events = self.create_common_events(ret)
     #TODO: addd abs(self.CS.angle_steers) > 90 to 'steerTempUnavailable' event
