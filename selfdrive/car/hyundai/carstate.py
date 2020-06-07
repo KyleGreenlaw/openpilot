@@ -27,11 +27,17 @@ class CarState(CarStateBase):
     self.is_set_speed_in_mph = 0
     self.lkas_button_on = 1
     self.lkas_error = 0
-      
+    self.has_scc13 = CP.carFingerprint in FEATURES["has_scc13"]
+    self.has_scc14 = CP.carFingerprint in FEATURES["has_scc14"]
+    self.cruise_main_button = 0
+    
   def update(self, cp, cp2, cp_cam):
     cp_mdps = cp2 if self.mdps_bus else cp
     cp_sas = cp2 if self.sas_bus else cp
     cp_scc = cp2 if self.scc_bus == 1 else cp_cam if self.scc_bus == 2 else cp
+    
+    self.prev_cruise_buttons = self.cruise_buttons
+    self.prev_cruise_main_button = self.cruise_main_button
     
     ret = car.CarState.new_message()
 
@@ -70,7 +76,9 @@ class CarState(CarStateBase):
       ret.cruiseState.speed = cp.vl["SCC11"]['VSetDis'] * speed_conv
     else:
       ret.cruiseState.speed = 0
-
+    self.cruise_main_button = ["CLU11"]["CF_Clu_CruiseSwMain"]
+    self.cruise_buttons = ["CLU11"]["CF_Clu_CruiseSwState"] 
+    
     # TODO: Find brake pressure
     ret.brake = 0
     ret.brakePressed = cp.vl["TCS13"]['DriverBraking'] != 0
@@ -140,12 +148,18 @@ class CarState(CarStateBase):
     # save the entire LKAS11, CLU11, SCC12 and MDPS12
     self.lkas11 = cp_cam.vl["LKAS11"]
     self.clu11 = cp.vl["CLU11"]
+    self.scc11 = cp_scc.vl["SCC11"]
     self.scc12 = cp_scc.vl["SCC12"]
     self.mdps12 = cp_mdps.vl["MDPS12"]
       
     self.park_brake = cp.vl["CGW1"]['CF_Gway_ParkBrakeSw']
     self.steer_state = cp_mdps.vl["MDPS12"]['CF_Mdps_ToiActive']  # 0 NOT ACTIVE, 1 ACTIVE
     self.lead_distance = cp_scc.vl["SCC11"]['ACC_ObjDist'] if not self.no_radar else 0
+    
+    if self.has_scc13:
+       self.scc13 = cp_scc.vl["SCC13"]
+     if self.has_scc14:
+       self.scc14 = cp_scc.vl["SCC14"]
 
     return ret
 
@@ -280,6 +294,16 @@ class CarState(CarStateBase):
         ("AEB_StopReq", "SCC12", 0),
         ("CR_VSM_Alive", "SCC12", 0),
         ("CR_VSM_ChkSum", "SCC12", 0),
+        
+        ("SCCDrvModeRValue", "SCC13", 2),
+        ("SCC_Equip", "SCC13", 1),
+        ("AebDrvSetStatus", "SCC13", 0),
+
+        ("JerkUpperLimit", "SCC14", 0),
+        ("JerkLowerLimit", "SCC14", 0),
+        ("SCCMode2", "SCC14", 0),
+        ("ComfortBandUpper", "SCC14", 0),
+        ("ComfortBandLower", "SCC14", 0),
       ]
       checks += [
         ("SCC11", 50),
@@ -364,7 +388,17 @@ class CarState(CarStateBase):
         ("AEB_CmdAct", "SCC12", 0),
         ("AEB_StopReq", "SCC12", 0),
         ("CR_VSM_Alive", "SCC12", 0),
-        ("CR_VSM_ChkSum", "SCC12", 0)
+        ("CR_VSM_ChkSum", "SCC12", 0),
+        
+        ("SCCDrvModeRValue", "SCC13", 2),
+        ("SCC_Equip", "SCC13", 1),
+        ("AebDrvSetStatus", "SCC13", 0),
+
+        ("JerkUpperLimit", "SCC14", 0),
+        ("JerkLowerLimit", "SCC14", 0),
+        ("SCCMode2", "SCC14", 0),
+        ("ComfortBandUpper", "SCC14", 0),
+        ("ComfortBandLower", "SCC14", 0),
       ]
       checks += [
         ("SCC11", 50),
@@ -427,6 +461,16 @@ class CarState(CarStateBase):
         ("AEB_StopReq", "SCC12", 0),
         ("CR_VSM_Alive", "SCC12", 0),
         ("CR_VSM_ChkSum", "SCC12", 0),
+        
+        ("SCCDrvModeRValue", "SCC13", 2),
+        ("SCC_Equip", "SCC13", 1),
+        ("AebDrvSetStatus", "SCC13", 0),
+
+        ("JerkUpperLimit", "SCC14", 0),
+        ("JerkLowerLimit", "SCC14", 0),
+        ("SCCMode2", "SCC14", 0),
+        ("ComfortBandUpper", "SCC14", 0),
+        ("ComfortBandLower", "SCC14", 0),
       ]
       checks += [
         ("SCC11", 50),
