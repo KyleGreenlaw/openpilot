@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 from cereal import car
 from selfdrive.config import Conversions as CV
-from selfdrive.car.hyundai.values import Ecu, ECU_FINGERPRINT, CAR, FINGERPRINTS
+from selfdrive.car.hyundai.values import Ecu, ECU_FINGERPRINT, CAR, FINGERPRINTS, Buttons
 from selfdrive.car import STD_CARGO_KG, scale_rot_inertia, scale_tire_stiffness, is_ecu_disconnected, gen_empty_fingerprint
 from selfdrive.car.interfaces import CarInterfaceBase
+
+ButtonType = car.CarState.ButtonEvent.Type
 
 class CarInterface(CarInterfaceBase):
   def __init__(self, CP, CarController, CarState):
@@ -168,7 +170,29 @@ class CarInterface(CarInterfaceBase):
     ret.canValid = self.cp.can_valid and self.cp2.can_valid and self.cp_cam.can_valid
 
     # TODO: button presses
-    ret.buttonEvents = []
+    buttonEvents = []
+      if self.CS.cruise_buttons != self.CS.prev_cruise_buttons:
+        be = car.CarState.ButtonEvent.new_message()
+        be.type = ButtonType.unknown
+        if self.CS.cruise_buttons != 0:
+          be.pressed = True
+          but = self.CS.cruise_buttons
+        else:
+          be.pressed = False
+          but = self.CS.prev_cruise_buttons
+        if but == Buttons.RES_ACCEL:
+          be.type = ButtonType.accelCruise
+        elif but == Buttons.DECEL_SET:
+          be.type = ButtonType.decelCruise
+        elif but == Buttons.CANCEL:
+          be.type = ButtonType.cancel
+        buttonEvents.append(be)
+      if self.CS.cruise_main_button != self.CS.prev_cruise_main_button:
+        be = car.CarState.ButtonEvent.new_message()
+        be.type = ButtonType.altButton3
+        be.pressed = bool(self.CS.cruise_main_button)
+        buttonEvents.append(be)
+      ret.buttonEvents = buttonEvents
 
     events = self.create_common_events(ret)
     #TODO: addd abs(self.CS.angle_steers) > 90 to 'steerTempUnavailable' event
@@ -189,6 +213,7 @@ class CarInterface(CarInterfaceBase):
   def apply(self, c):
     can_sends = self.CC.update(c.enabled, self.CS, self.frame, c.actuators,
                                c.cruiseControl.cancel, c.hudControl.visualAlert, c.hudControl.leftLaneVisible,
-                               c.hudControl.rightLaneVisible, c.hudControl.leftLaneDepart, c.hudControl.rightLaneDepart)
+                               c.hudControl.rightLaneVisible, c.hudControl.leftLaneDepart, c.hudControl.rightLaneDepart,
+                               c.hudControl.setSpeed, c.hudControl.leadVisible)
     self.frame += 1
     return can_sends
