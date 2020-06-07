@@ -162,16 +162,22 @@ class CarState(CarStateBase):
 
       ("CF_Gway_DrvSeatBeltInd", "CGW4", 1),
 
-      ("CF_Gway_DrvSeatBeltSw", "CGW1", 0),  # Driver Seatbelt
-      ("CF_Gway_DrvDrSw", "CGW1", 0),  # Driver Door is open
-      ("CF_Gway_AstDrSw", "CGW1", 0),  # Passenger door is open
-      ("CF_Gway_RLDrSw", "CGW2", 0),  # Rear reft door is open
-      ("CF_Gway_RRDrSw", "CGW2", 0),  # Rear right door is open
+      ("CF_Gway_DrvSeatBeltSw", "CGW1", 0), # Driver Seatbelt
+      ("CF_Gway_DrvDrSw", "CGW1", 0),       # Driver Door is open
+      ("CF_Gway_AstDrSw", "CGW1", 0),       # Passenger door is open
+      ("CF_Gway_RLDrSw", "CGW2", 0),        # Rear reft door is open
+      ("CF_Gway_RRDrSw", "CGW2", 0),        # Rear right door is open
       ("CF_Gway_TSigLHSw", "CGW1", 0),
       ("CF_Gway_TurnSigLh", "CGW1", 0),
       ("CF_Gway_TSigRHSw", "CGW1", 0),
       ("CF_Gway_TurnSigRh", "CGW1", 0),
-      ("CF_Gway_ParkBrakeSw", "CGW1", 0),  # Parking Brake
+      ("CF_Gway_ParkBrakeSw", "CGW1", 0),   # Parking Brake
+
+      ("BRAKE_ACT", "EMS12", 0),
+      ("PV_AV_CAN", "EMS12", 0),
+      ("TPS", "EMS12", 0),
+
+      ("CF_Ems_AclAct", "EMS16", 0),
 
       ("CYL_PRES", "ESP12", 0),
 
@@ -179,7 +185,7 @@ class CarState(CarStateBase):
       ("CF_Clu_CruiseSwMain", "CLU11", 0),
       ("CF_Clu_SldMainSW", "CLU11", 0),
       ("CF_Clu_ParityBit1", "CLU11", 0),
-      ("CF_Clu_VanzDecimal", "CLU11", 0),
+      ("CF_Clu_VanzDecimal" , "CLU11", 0),
       ("CF_Clu_Vanz", "CLU11", 0),
       ("CF_Clu_SPEED_UNIT", "CLU11", 0),
       ("CF_Clu_DetentOut", "CLU11", 0),
@@ -194,15 +200,16 @@ class CarState(CarStateBase):
 
       ("ESC_Off_Step", "TCS15", 0),
 
-      ("CF_Lvr_GearInf", "LVR11", 0),  # Transmission Gear (0 = N or P, 1-8 = Fwd, 14 = Rev)
+      ("CF_Lvr_GearInf", "LVR11", 0),        #Transmission Gear (0 = N or P, 1-8 = Fwd, 14 = Rev)
 
       ("CF_Lca_Stat", "LCA11", 0),
       ("CF_Lca_IndLeft", "LCA11", 0),
       ("CF_Lca_IndRight", "LCA11", 0),
     ]
+
     checks = [
       # address, frequency
-            ("TCS13", 50),
+      ("TCS13", 50),
       ("TCS15", 10),
       ("CLU11", 50),
       ("ESP12", 100),
@@ -211,7 +218,6 @@ class CarState(CarStateBase):
       ("WHL_SPD11", 50),
       ("EMS12", 100),
       ("EMS16", 100),
-
     ]
     if not CP.mdpsBus:
       signals += [
@@ -287,32 +293,15 @@ class CarState(CarStateBase):
       ]
     elif CP.carFingerprint in FEATURES["use_tcu_gears"]:
       signals += [
-        ("CUR_GR", "TCU12", 0),
+        ("CUR_GR", "TCU12",0),
       ]
     elif CP.carFingerprint in FEATURES["use_elect_gears"]:
       signals += [
         ("Elect_Gear_Shifter", "ELECT_GEAR", 0),
-      ]
+    ]
     else:
       signals += [
-        ("CF_Lvr_Gear", "LVR12", 0),
-      ]
-    if CP.carFingerprint not in FEATURES["use_elect_ems"]:
-      signals += [
-        ("PV_AV_CAN", "EMS12", 0),
-        ("CF_Ems_AclAct", "EMS16", 0),
-      ]
-      checks += [
-        ("EMS12", 100),
-        ("EMS16", 100),
-      ]
-    else:
-      signals += [
-        ("Accel_Pedal_Pos", "E_EMS11", 0),
-        ("Brake_Pedal_Pos", "E_EMS11", 0),
-      ]
-      checks += [
-        ("E_EMS11", 100),
+        ("CF_Lvr_Gear","LVR12",0),
       ]
     return CANParser(DBC[CP.carFingerprint]['pt'], signals, checks, 0)
 
