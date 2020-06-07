@@ -27,7 +27,7 @@ def accel_hysteresis(accel, accel_steady):
   return accel, accel_steady
 
 def process_hud_alert(enabled, fingerprint, visual_alert, left_lane,
-                      right_lane, left_lane_depart, right_lane_depart):
+                      right_lane, left_lane_depart, right_lane_depart, button_on):
   sys_warning = (visual_alert == VisualAlert.steerRequired)
 
   # initialize to no line visible
