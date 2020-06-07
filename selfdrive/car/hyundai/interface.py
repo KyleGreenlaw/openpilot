@@ -171,28 +171,28 @@ class CarInterface(CarInterfaceBase):
 
     # TODO: button presses
     buttonEvents = []
-      if self.CS.cruise_buttons != self.CS.prev_cruise_buttons:
-        be = car.CarState.ButtonEvent.new_message()
-        be.type = ButtonType.unknown
-        if self.CS.cruise_buttons != 0:
-          be.pressed = True
-          but = self.CS.cruise_buttons
-        else:
-          be.pressed = False
-          but = self.CS.prev_cruise_buttons
-        if but == Buttons.RES_ACCEL:
-          be.type = ButtonType.accelCruise
-        elif but == Buttons.DECEL_SET:
-          be.type = ButtonType.decelCruise
-        elif but == Buttons.CANCEL:
-          be.type = ButtonType.cancel
-        buttonEvents.append(be)
-      if self.CS.cruise_main_button != self.CS.prev_cruise_main_button:
-        be = car.CarState.ButtonEvent.new_message()
-        be.type = ButtonType.altButton3
-        be.pressed = bool(self.CS.cruise_main_button)
-        buttonEvents.append(be)
-      ret.buttonEvents = buttonEvents
+     if self.CS.cruise_buttons != self.CS.prev_cruise_buttons:
+       be = car.CarState.ButtonEvent.new_message()
+       be.type = ButtonType.unknown
+       if self.CS.cruise_buttons != 0:
+         be.pressed = True
+         but = self.CS.cruise_buttons
+       else:
+         be.pressed = False
+         but = self.CS.prev_cruise_buttons
+       if but == Buttons.RES_ACCEL:
+         be.type = ButtonType.accelCruise
+       elif but == Buttons.DECEL_SET:
+         be.type = ButtonType.decelCruise
+       elif but == Buttons.CANCEL:
+         be.type = ButtonType.cancel
+       buttonEvents.append(be)
+     if self.CS.cruise_main_button != self.CS.prev_cruise_main_button:
+       be = car.CarState.ButtonEvent.new_message()
+       be.type = ButtonType.altButton3
+       be.pressed = bool(self.CS.cruise_main_button)
+       buttonEvents.append(be)
+     ret.buttonEvents = buttonEvents
 
     events = self.create_common_events(ret)
     #TODO: addd abs(self.CS.angle_steers) > 90 to 'steerTempUnavailable' event
