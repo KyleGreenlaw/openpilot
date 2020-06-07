@@ -69,7 +69,7 @@ class CarController():
     self.fs_error = False
     self.update_live = False
   def update(self, enabled, CS, frame, actuators, pcm_cancel_cmd, visual_alert,
-             left_lane, right_lane, left_lane_depart, right_lane_depart):
+             left_lane, right_lane, left_lane_depart, right_lane_depart, set_speed, lead_visible):
     # gas and brake
     apply_accel = actuators.gas - actuators.brake
 
@@ -95,7 +95,7 @@ class CarController():
 
     sys_warning, sys_state, left_lane_warning, right_lane_warning =\
       process_hud_alert(enabled, self.car_fingerprint, visual_alert,
-                        left_lane, right_lane, left_lane_depart, right_lane_depart, set_speed, lead_visible)
+                        left_lane, right_lane, left_lane_depart, right_lane_depart)
     
     clu11_speed = CS.clu11["CF_Clu_Vanz"]
     enabled_speed = 38 if CS.is_set_speed_in_mph  else 60
