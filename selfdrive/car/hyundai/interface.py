@@ -182,17 +182,18 @@ class CarInterface(CarInterfaceBase):
         but = self.CS.prev_cruise_buttons
       if but == Buttons.RES_ACCEL:
         be.type = ButtonType.accelCruise
-      elif but == Buttons.DECEL_SET:
+      elif but == Buttons.SET_DECEL:
         be.type = ButtonType.decelCruise
       elif but == Buttons.CANCEL:
         be.type = ButtonType.cancel
-       buttonEvents.append(be)
+      buttonEvents.append(be)
     if self.CS.cruise_main_button != self.CS.prev_cruise_main_button:
       be = car.CarState.ButtonEvent.new_message()
       be.type = ButtonType.altButton3
       be.pressed = bool(self.CS.cruise_main_button)
       buttonEvents.append(be)
     ret.buttonEvents = buttonEvents
+
 
     events = self.create_common_events(ret)
     #TODO: addd abs(self.CS.angle_steers) > 90 to 'steerTempUnavailable' event
