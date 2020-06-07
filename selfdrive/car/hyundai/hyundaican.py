@@ -130,11 +130,11 @@ def create_scc13(packer, scc13):
 
 def create_scc14(packer, enabled, scc14):
   values = scc14
-    if enabled:
-      values["JerkUpperLimit"] = 3.2
-      values["JerkLowerLimit"] = 0.1
-      values["SCCMode"] = 1
-      values["ComfortBandUpper"] = 0.24
-      values["ComfortBandLower"] = 0.24
+  if enabled:
+    values["JerkUpperLimit"] = 3.2
+    values["JerkLowerLimit"] = 0.1
+    values["SCCMode"] = 1
+    values["ComfortBandUpper"] = 0.24
+    values["ComfortBandLower"] = 0.24
 
   return packer.make_can_msg("SCC14", 0, values)
