@@ -132,8 +132,8 @@ class PathPlanner():
         if not one_blinker or below_lane_change_speed:
           self.lane_change_state = LaneChangeState.off
         elif self.lane_change_direction == LaneChangeDirection.left and left_BlindSpot:
-          self.lane_change_Blocked = LaneChangeBlocked.left # for testing, left is off right is pre
-          self.lane_change_timer = 0
+          self.lane_change_Blocked = LaneChangeBlocked.left 
+          self.lane_change_timer = self.lane_change_timer*0
         elif self.lane_change_direction == LaneChangeDirection.right and right_BlindSpot:
           self.lane_change_Blocked = LaneChangeBlocked.right
           self.lane_change_timer = 0
@@ -161,15 +161,17 @@ class PathPlanner():
 
     if self.lane_change_state in [LaneChangeState.off, LaneChangeState.preLaneChange]:
       self.lane_change_timer = 0.0
+    else:
+      self.lane_change_timer += DT_MDL
+    
+    if self.lane_change_state in [LaneChangeState.off, LaneChangeState.preLaneChange]:
       if self.lane_change_direction == LaneChangeDirection.left and left_BlindSpot:
         self.lane_change_Blocked = LaneChangeBlocked.left
       elif self.lane_change_direction == LaneChangeDirection.right and right_BlindSpot:
         self.lane_change_Blocked = LaneChangeBlocked.right
       else:
         self.lane_change_Blocked = LaneChangeBlocked.clear
-    else:
-      self.lane_change_timer += DT_MDL
-
+   
     self.prev_one_blinker = one_blinker
 
     desire = DESIRES[self.lane_change_direction][self.lane_change_state]
