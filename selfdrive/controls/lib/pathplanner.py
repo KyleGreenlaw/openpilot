@@ -12,10 +12,11 @@ from cereal import log
 
 LaneChangeState = log.PathPlan.LaneChangeState
 LaneChangeDirection = log.PathPlan.LaneChangeDirection
+LaneChangeBlocked = log.PathPlan.LaneChangeBlocked
 
 LOG_MPC = os.environ.get('LOG_MPC', False)
 
-LANE_CHANGE_SPEED_MIN = 45 * CV.MPH_TO_MS
+LANE_CHANGE_SPEED_MIN = 0 * CV.MPH_TO_MS
 LANE_CHANGE_TIME_MAX = 10.
 
 DESIRES = {
@@ -58,6 +59,7 @@ class PathPlanner():
     self.lane_change_enabled = Params().get('LaneChangeEnabled') == b'1'
     self.lane_change_state = LaneChangeState.off
     self.lane_change_direction = LaneChangeDirection.none
+    self.lane_change_Blocked = LaneChangeBlocked.clear
     self.lane_change_timer = 0.0
     self.lane_change_ll_prob = 1.0
     self.prev_one_blinker = False
@@ -100,6 +102,9 @@ class PathPlanner():
     # Lane change logic
     one_blinker = sm['carState'].leftBlinker != sm['carState'].rightBlinker
     below_lane_change_speed = v_ego < LANE_CHANGE_SPEED_MIN
+    
+    left_BlindSpot = sm['carState'].leftBlindspot
+    right_BlindSpot = sm['carState'].rightBlindspot
 
     if sm['carState'].leftBlinker:
       self.lane_change_direction = LaneChangeDirection.left
@@ -148,6 +153,16 @@ class PathPlanner():
 
     if self.lane_change_state in [LaneChangeState.off, LaneChangeState.preLaneChange]:
       self.lane_change_timer = 0.0
+      if self.lane_change_direction == LaneChangeDirection.left:
+        if not left_BlindSpot:
+          self.lane_change_Blocked = LaneChangeBlocked.clear
+        if left_BlindSpot:
+          self.lane_change_Blocked = LaneChangeBlocked.left
+      if self.lane_change_direction == LaneChangeDirection.right:
+        if not right_BlindSpot:
+          self.lane_change_Blocked = LaneChangeBlocked.clear
+        if right_BlindSpot:
+          self.lane_change_Blocked = LaneChangeBlocked.right
     else:
       self.lane_change_timer += DT_MDL
 
@@ -216,6 +231,7 @@ class PathPlanner():
     plan_send.pathPlan.desire = desire
     plan_send.pathPlan.laneChangeState = self.lane_change_state
     plan_send.pathPlan.laneChangeDirection = self.lane_change_direction
+    plan_send.pathPlan.laneChangeBlocked = self.lane_change_Blocked 
 
     pm.send('pathPlan', plan_send)
 
