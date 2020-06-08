@@ -161,6 +161,7 @@ class PathPlanner():
       if (not self.lane_change_Blocked == LaneChangeBlocked.left) or (not self.lane_change_Blocked == LaneChangeBlocked.right):
         self.lane_change_timer = 0.0
         self.lane_change_Blocked = LaneChangeBlocked.clear
+        self.lane_change_timer += DT_MDL
     else:
       self.lane_change_timer += DT_MDL
     
