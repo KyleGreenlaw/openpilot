@@ -136,9 +136,9 @@ class PathPlanner():
         elif self.lane_change_direction == LaneChangeDirection.right and right_BlindSpot:
           self.lane_change_state = LaneChangeState.preLaneChange
         else:
+          self.lane_change_Blocked = LaneChangeBlocked.clear
           if torque_applied:
             self.lane_change_state = LaneChangeState.laneChangeStarting
-            self.lane_change_Blocked = LaneChangeBlocked.clear
 
       # starting
       elif self.lane_change_state == LaneChangeState.laneChangeStarting:
