@@ -165,6 +165,7 @@ class PathPlanner():
         self.lane_change_Blocked = LaneChangeBlocked.right
         self.lane_change_timer = 0.0
       else:
+        self.lane_change_Blocked = LaneChangeBlocked.clear
         self.lane_change_timer = 0.0
     else:
       self.lane_change_timer += DT_MDL
