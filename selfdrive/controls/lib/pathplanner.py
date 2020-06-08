@@ -158,21 +158,10 @@ class PathPlanner():
           self.lane_change_state = LaneChangeState.off
 
     if self.lane_change_state in [LaneChangeState.off, LaneChangeState.preLaneChange]:
-      if (not self.lane_change_Blocked == LaneChangeBlocked.left) or (not self.lane_change_Blocked == LaneChangeBlocked.right):
-        self.lane_change_timer = 0.0
-        self.lane_change_Blocked = LaneChangeBlocked.clear
-        self.lane_change_timer += DT_MDL
+      self.lane_change_timer = 0.0
     else:
       self.lane_change_timer += DT_MDL
-    
-    if self.lane_change_state in [LaneChangeState.off, LaneChangeState.preLaneChange]:
-      if self.lane_change_direction == LaneChangeDirection.left and left_BlindSpot:
-        self.lane_change_Blocked = LaneChangeBlocked.left
-      elif self.lane_change_direction == LaneChangeDirection.right and right_BlindSpot:
-        self.lane_change_Blocked = LaneChangeBlocked.right
-      else:
-        self.lane_change_Blocked = LaneChangeBlocked.clear
-   
+
     self.prev_one_blinker = one_blinker
 
     desire = DESIRES[self.lane_change_direction][self.lane_change_state]
