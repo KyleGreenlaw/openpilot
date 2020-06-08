@@ -154,6 +154,12 @@ class Controls:
     self.events.clear()
     self.events.add_from_msg(CS.events)
     self.events.add_from_msg(self.sm['dMonitoringState'].events)
+    
+    # Hadle Distracted Driver + Auto Resume
+    if self.sm['isDistracted'].isDistracted:
+      CS.is_Distracted = True
+      if CS.auto_resume_blocked:
+        self.events.add(EventName.autoResumeBlocked)
 
     # Handle startup event
     if self.startup_event is not None:
