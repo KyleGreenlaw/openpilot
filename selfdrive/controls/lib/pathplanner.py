@@ -138,7 +138,7 @@ class PathPlanner():
         else:
           if torque_applied:
             self.lane_change_state = LaneChangeState.laneChangeStarting
-            self.lane_change_Blocked = LaneChangeBlocked.off
+            self.lane_change_Blocked = LaneChangeBlocked.clear
 
       # starting
       elif self.lane_change_state == LaneChangeState.laneChangeStarting:
