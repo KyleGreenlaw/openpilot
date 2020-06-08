@@ -132,9 +132,9 @@ class PathPlanner():
         if not one_blinker or below_lane_change_speed:
           self.lane_change_state = LaneChangeState.off
         elif self.lane_change_direction == LaneChangeDirection.left and left_BlindSpot:
-          self.lane_change_state = LaneChangeState.preLaneChange # for testing, left is off right is pre
+          self.lane_change_Blocked = LaneChangeBlocked.left # for testing, left is off right is pre
         elif self.lane_change_direction == LaneChangeDirection.right and right_BlindSpot:
-          self.lane_change_state = LaneChangeState.preLaneChange
+          self.lane_change_Blocked = LaneChangeBlocked.right
         else:
           self.lane_change_Blocked = LaneChangeBlocked.clear
           if torque_applied:
