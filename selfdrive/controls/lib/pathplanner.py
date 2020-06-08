@@ -158,7 +158,9 @@ class PathPlanner():
           self.lane_change_state = LaneChangeState.off
 
     if self.lane_change_state in [LaneChangeState.off, LaneChangeState.preLaneChange]:
-      self.lane_change_timer = 0.0
+      if (not self.lane_change_Blocked == LaneChangeBlocked.left) or (not self.lane_change_Blocked == LaneChangeBlocked.right):
+        self.lane_change_timer = 0.0
+        self.lane_change_Blocked = LaneChangeBlocked.clear
     else:
       self.lane_change_timer += DT_MDL
     
