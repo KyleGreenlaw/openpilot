@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 from cereal import car
 from selfdrive.config import Conversions as CV
-from selfdrive.controls.lib.drive_helpers import EventTypes as ET, create_event
+from selfdrive.controls.lib.drive_helpers import EventTypes as ET, create_event, get_events
 from selfdrive.controls.lib.vehicle_model import VehicleModel
 from selfdrive.car.hyundai.carstate import CarState, get_can_parser, get_can2_parser, get_camera_parser
 from selfdrive.car.hyundai.values import Ecu, ECU_FINGERPRINT, CAR, FINGERPRINTS
@@ -362,7 +362,7 @@ class CarInterface(CarInterfaceBase):
       events.append(create_event('leftLCAbsm', [ET.WARNING]))
       
     # Hadle Distracted Driver + Auto Resume
-    if events == 'driverDistracted':
+    if events == get_events('driverDistracted', [ET.WARNING]):
       self.CC.isDistracted = True
       if self.CC.autoResumeBlocked:
         events.add(EventName.autoResumeBlocked)
