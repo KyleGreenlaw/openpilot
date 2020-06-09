@@ -362,7 +362,7 @@ class CarInterface(CarInterfaceBase):
       events.append(create_event('leftLCAbsm', [ET.WARNING]))
       
     # Hadle Distracted Driver + Auto Resume
-    if get_events('driverDistracted'):
+    if events == get_events('driverDistracted'):
       self.CC.isDistracted = True
       if self.CC.autoResumeBlocked:
         events.add(EventName.autoResumeBlocked)
