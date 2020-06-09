@@ -109,7 +109,7 @@ struct CarEvent @0x9b1657f34caf3ad3 {
     belowEngageSpeed @84;
     rightBlindspot @85;
     leftBlindspot @86;
-    autoResumeBlocked @87
+    autoResumeBlocked @87;
   }
 }
 
