@@ -157,7 +157,7 @@ class Controls:
     
     # Hadle Distracted Driver + Auto Resume
     if self.sm['dMonitoringState'].isDistracted:
-      CS.is_Distracted = True
+      self.CS.is_Distracted = True
       if CS.auto_resume_blocked:
         self.events.add(EventName.autoResumeBlocked)
 
