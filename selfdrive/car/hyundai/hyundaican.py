@@ -115,18 +115,3 @@ def create_scc11(packer, frame, enabled, set_speed, lead_visible, scc11):
   values["ACC_ObjStatus"] = lead_visible
 
   return packer.make_can_msg("SCC11", 0, values)
-
-def create_scc13(packer, scc13):
-  values = scc13
-  return packer.make_can_msg("SCC13", 0, values)
-
-def create_scc14(packer, enabled, scc14):
-  values = scc14
-  if enabled:
-    values["JerkUpperLimit"] = 3.2
-    values["JerkLowerLimit"] = 0.1
-    values["SCCMode"] = 1
-    values["ComfortBandUpper"] = 0.24
-    values["ComfortBandLower"] = 0.24
-
-  return packer.make_can_msg("SCC14", 0, values)
