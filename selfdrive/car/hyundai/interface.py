@@ -289,6 +289,12 @@ class CarInterface(CarInterfaceBase):
       events.add(EventName.lkasButtonOff)
     if not self.CC.longcontrol and EventName.pedalPressed in events.events:
       events.events.remove(EventName.pedalPressed)
+    
+    # Hadle Distracted Driver + Auto Resume
+    if self.events == EventName.driverDistracted:
+      self.isDistracted = True
+      if self.autoResumeBlocked:
+        events.add(EventName.autoResumeBlocked)
 
     ret.events = events.to_msg()
 
