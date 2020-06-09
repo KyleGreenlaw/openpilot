@@ -126,8 +126,6 @@ class Controls:
     self.current_alert_types = []
     self.current_alert_types = []
     self.current_alert_types = []
-    self.autoResumeBlocked = self.CC.auto_resume_blocked
-    self.isdistracted = self.CC.is_distracted
 
     self.sm['liveCalibration'].calStatus = Calibration.INVALID
     self.sm['thermal'].freeSpace = 1.
@@ -158,12 +156,6 @@ class Controls:
     self.events.clear()
     self.events.add_from_msg(CS.events)
     self.events.add_from_msg(self.sm['dMonitoringState'].events)
-    
-    # Hadle Distracted Driver + Auto Resume
-    if self.sm['dMonitoringState'].isDistracted:
-      self.isDistracted = True
-      if self.autoResumeBlocked:
-        self.events.add(EventName.autoResumeBlocked)
 
     # Handle startup event
     if self.startup_event is not None:
