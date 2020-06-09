@@ -96,6 +96,7 @@ struct CarEvent @0x9b1657f34caf3ad3 {
     leftLCAbsm @71;
     preventLCA @72;
     turningIndicatorOn @73;
+    autoResumeBlocked @74;
   }
 }
 
