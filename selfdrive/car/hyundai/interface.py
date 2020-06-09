@@ -291,7 +291,7 @@ class CarInterface(CarInterfaceBase):
       events.events.remove(EventName.pedalPressed)
     
     # Hadle Distracted Driver + Auto Resume
-    if self.events == EventName.driverDistracted:
+    if events == EventName.driverDistracted:
       self.isDistracted = True
       if self.autoResumeBlocked:
         events.add(EventName.autoResumeBlocked)
