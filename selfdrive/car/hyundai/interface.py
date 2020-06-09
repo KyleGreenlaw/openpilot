@@ -360,6 +360,12 @@ class CarInterface(CarInterfaceBase):
       events.append(create_event('rightLCAbsm', [ET.WARNING]))
     if ret.leftBlinker and ret.lcaLeft and self.CS.v_ego > (45 * CV.MPH_TO_MS):
       events.append(create_event('leftLCAbsm', [ET.WARNING]))
+      
+    # Hadle Distracted Driver + Auto Resume
+    if events == EventName.driverDistracted:
+      self.CC.isDistracted = True
+      if self.CC.autoResumeBlocked:
+        events.add(EventName.autoResumeBlocked)
 
     ret.events = events
 
