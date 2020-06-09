@@ -168,8 +168,6 @@ class CarState(CarStateBase):
     if self.has_scc14:
       self.scc14 = cp_scc.vl["SCC14"]
       
-    self.is_distracted = False
-
     return ret
 
   @staticmethod
