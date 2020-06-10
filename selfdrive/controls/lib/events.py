@@ -378,6 +378,14 @@ EVENTS = {
       AlertStatus.critical, AlertSize.full,
       Priority.HIGH, VisualAlert.steerRequired, AudibleAlert.chimeWarningRepeat, .1, .1, .1),
   },
+  
+  EventName.autoResumeBlocked: {
+    ET.WARNING: Alert(
+      "Lead Vehicle has Moved",
+      "Pay attention or hit RES to begin driving.",
+      AlertStatus.userPrompt, AlertSize.mid,
+      Priority.HIGH, VisualAlert.steerRequired, AudibleAlert.chimeWarning2Repeat, .1, 2., .1, alert_rate=0.75),
+  },
 
   EventName.driverMonitorLowAcc: {
     ET.WARNING: Alert(
