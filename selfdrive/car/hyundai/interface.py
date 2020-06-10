@@ -72,13 +72,13 @@ class CarInterface(CarInterfaceBase):
       ret.lateralTuning.pid.kiBP, ret.lateralTuning.pid.kpBP = [[0.], [0.]]
       ret.lateralTuning.pid.kpV, ret.lateralTuning.pid.kiV = [[0.25], [0.05]]
     elif candidate in [CAR.ELANTRA, CAR.ELANTRA_GT_I30]:
-      ret.lateralTuning.pid.kf = 0.00006
-      ret.mass = 1275. + STD_CARGO_KG
-      ret.wheelbase = 2.7
-      ret.steerRatio = 15.4            # 14 is Stock | Settled Params Learner values are steerRatio: 15.401566348670535
-      tire_stiffness_factor = 0.385    # stiffnessFactor settled on 1.0081302973865127
+      ret.lateralTuning.pid.kf = 0.00003
+      ret.mass = 1411. + STD_CARGO_KG  # Spec Elantra GT Sport
+      ret.wheelbase = 2.65  # Spec Elantra GT Sport
+      ret.steerRatio = 15.4  # Spec Elantra GT Sport
+      tire_stiffness_factor = .8
       ret.lateralTuning.pid.kiBP, ret.lateralTuning.pid.kpBP = [[0.], [0.]]
-      ret.lateralTuning.pid.kpV, ret.lateralTuning.pid.kiV = [[0.25], [0.05]]
+      ret.lateralTuning.pid.kpV, ret.lateralTuning.pid.kiV = [[0.10], [0.05]]
       ret.minSteerSpeed = 32 * CV.MPH_TO_MS
     elif candidate == CAR.HYUNDAI_GENESIS:
       ret.lateralTuning.pid.kf = 0.00005
@@ -286,7 +286,7 @@ class CarInterface(CarInterfaceBase):
 
     events = self.create_common_events(ret)
 
-    if abs(ret.steeringAngle) > 90. and EventName.steerTempUnavailable not in events.events:
+    if EventName.steerTempUnavailable not in events.events:
       events.add(EventName.steerTempUnavailable)
     if self.low_speed_alert and not self.CS.mdps_bus:
       events.add(EventName.belowSteerSpeed)
@@ -296,6 +296,12 @@ class CarInterface(CarInterfaceBase):
       events.add(EventName.lkasButtonOff)
     if not self.CC.longcontrol and EventName.pedalPressed in events.events:
       events.events.remove(EventName.pedalPressed)
+      
+    # Hadle Distracted Driver + Auto Resume
+    if events == EventName.driverDistracted:
+      self.CC.isDistracted = True
+      if self.CC.autoResumeBlocked:
+        events.add(EventName.autoResumeBlocked)
 
     ret.events = events.to_msg()
 
