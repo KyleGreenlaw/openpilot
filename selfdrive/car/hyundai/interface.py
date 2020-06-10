@@ -295,8 +295,8 @@ class CarInterface(CarInterfaceBase):
       
     # Hadle Distracted Driver + Auto Resume
     if EventName.driverDistracted:
-      self.CC.is_Distracted = True
-      if self.CC.auto_Resume_Blocked:
+      self.CC.is_distracted = True
+      if self.CC.auto_resume_blocked:
         events.add(EventName.autoResumeBlocked)
 
     ret.events = events.to_msg()
