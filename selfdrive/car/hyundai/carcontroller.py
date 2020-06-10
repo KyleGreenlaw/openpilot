@@ -70,7 +70,9 @@ class CarController():
     self.turning_signal_timer = 0
     self.lkas_button_on = True
     self.longcontrol = False #TODO: make auto
-
+    self.auto_resume_blocked = False
+    self.is_distracted = False
+    
   def update(self, enabled, CS, frame, actuators, pcm_cancel_cmd, visual_alert,
              left_lane, right_lane, left_lane_depart, right_lane_depart, set_speed, lead_visible):
 
@@ -95,6 +97,16 @@ class CarController():
     if CS.out.vEgo < 16.7 and self.car_fingerprint == CAR.HYUNDAI_GENESIS and not CS.mdps_bus:
       lkas_active = 0
 
+    # Disable steering while turning blinker on and speed below 60 kph
+    if CS.out.leftBlinker or CS.out.rightBlinker:
+      if self.car_fingerprint not in [CAR.KIA_OPTIMA, CAR.KIA_OPTIMA_H]:
+        self.turning_signal_timer = 100  # Disable for 1.0 Seconds after blinker turned off
+      elif CS.left_blinker_flash or CS.right_blinker_flash: # Optima has blinker flash signal only
+        self.turning_signal_timer = 100
+    if self.turning_signal_timer and CS.out.vEgo < 16.7:
+      lkas_active = 0
+    if self.turning_signal_timer:
+      self.turning_signal_timer -= 1
     if not lkas_active:
       apply_steer = 0
 
@@ -151,9 +163,12 @@ class CarController():
         self.last_lead_distance = CS.lead_distance
         self.resume_cnt = 0
       # when lead car starts moving, create 6 RES msgs
+      elif self.is_distracted:
+        self.auto_resume_blocked = True
       elif CS.lead_distance != self.last_lead_distance and (frame - self.last_resume_frame) > 5:
         can_sends.append(create_clu11(self.packer, frame, CS.scc_bus, CS.clu11, Buttons.RES_ACCEL, clu11_speed))
         self.resume_cnt += 1
+        self.auto_resume_blocked = False
         # interval after 6 msgs
         if self.resume_cnt > 5:
           self.last_resume_frame = frame
