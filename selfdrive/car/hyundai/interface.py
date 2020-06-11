@@ -298,6 +298,8 @@ class CarInterface(CarInterfaceBase):
       self.CC.is_distracted = True
       if self.CC.auto_resume_blocked:
         events.add(EventName.autoResumeBlocked)
+    else:
+      self.CC.is_distracted = False
 
     ret.events = events.to_msg()
 
