@@ -167,9 +167,9 @@ class CarController():
         if self.is_distracted:
           self.auto_resume_blocked = True
         else:
+          self.auto_resume_blocked = False
           can_sends.append(create_clu11(self.packer, frame, CS.scc_bus, CS.clu11, Buttons.RES_ACCEL, clu11_speed))
           self.resume_cnt += 1
-          self.auto_resume_blocked = False
           # interval after 6 msgs
           if self.resume_cnt > 5:
             self.last_resume_frame = frame
@@ -177,7 +177,6 @@ class CarController():
     # reset lead distnce after the car starts moving
     elif self.last_lead_distance != 0:
       self.last_lead_distance = 0  
-      self.auto_resume_blocked = False
 
     # 20 Hz LFA MFA message
     if frame % 5 == 0 and self.car_fingerprint in [CAR.SONATA, CAR.PALISADE, CAR.SONATA_H]:
