@@ -268,12 +268,12 @@ class CarState(CarStateBase):
       ("SCC_Equip", "SCC13", 1),
       ("AebDrvSetStatus", "SCC13", 0),
 
-      ("JerkUpperLimit", "SCC14", 7),
+      ("JerkUpperLimit", "SCC14", 0),
       ("JerkLowerLimit", "SCC14", 0),
       ("SCCMode2", "SCC14", 0),
-      ("ComfortBandUpper", "SCC14", 1.26),
-      ("ComfortBandLower", "SCC14", 0.24),
-      ("ObjGap", "SCC14", 5),
+      ("ComfortBandUpper", "SCC14", 1),
+      ("ComfortBandLower", "SCC14", 0),
+      ("ObjGap", "SCC14", 0),
     ]
 
     checks = [
