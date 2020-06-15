@@ -157,6 +157,7 @@ class CarState(CarStateBase):
     self.mdps12 = cp_mdps.vl["MDPS12"]
     self.park_brake = cp.vl["CGW1"]['CF_Gway_ParkBrakeSw']
     self.steer_state = cp_mdps.vl["MDPS12"]['CF_Mdps_ToiActive'] #0 NOT ACTIVE, 1 ACTIVE
+    self.cruise_unavail = cp.vl["TCS13"]['ACC_EQUIP'] != 1
     self.lead_distance = cp_scc.vl["SCC11"]['ACC_ObjDist'] if not self.no_radar else 0
     self.lkas_error = cp_cam.vl["LKAS11"]["CF_Lkas_LdwsSysState"] == 7
     if not self.lkas_error:
@@ -239,7 +240,6 @@ class CarState(CarStateBase):
       ("Navi_SCC_Curve_Act", "SCC11", 0),
       ("Navi_SCC_Camera_Act", "SCC11", 0),
       ("Navi_SCC_Camera_Status", "SCC11", 0),
-      
       ("ACCMode", "SCC12", 0),
       ("CF_VSM_Prefill", "SCC12", 0),
       ("CF_VSM_DecCmdAct", "SCC12", 0),
@@ -251,10 +251,10 @@ class CarState(CarStateBase):
       ("ACCMode", "SCC12", 0),
       ("StopReq", "SCC12", 0),
       ("CR_VSM_DecCmd", "SCC12", 0),
-      ("aReqRaw", "SCC12", 0), #aReqMax
+      ("aReqRaw", "SCC12", -10.23), #aReqMax
       ("TakeOverReq", "SCC12", 0),
       ("PreFill", "SCC12", 0),
-      ("aReqValue", "SCC12", -10.23),
+      ("aReqValue", "SCC12", 0), #aReqMin
       ("CF_VSM_ConfMode", "SCC12", 0),
       ("AEB_Failinfo", "SCC12", 0),
       ("AEB_Status", "SCC12", 0),
@@ -262,15 +262,15 @@ class CarState(CarStateBase):
       ("AEB_StopReq", "SCC12", 0),
       ("CR_VSM_Alive", "SCC12", 0),
       ("CR_VSM_ChkSum", "SCC12", 0),
+      ("SCCDrvModeRValue", "SCC13", 3),
       ("SCC_Equip", "SCC13", 1),
       ("AebDrvSetStatus", "SCC13", 0),
-      ("SCCDrvModeRValue", "SCC13", 3),
-      
-      ("JerkUpperLimit", "SCC14", 0),
+
+      ("JerkUpperLimit", "SCC14", 3.10),
       ("JerkLowerLimit", "SCC14", 0),
       ("SCCMode2", "SCC14", 0),
-      ("ComfortBandUpper", "SCC14", 0),
-      ("ComfortBandLower", "SCC14", 0),
+      ("ComfortBandUpper", "SCC14", 42),
+      ("ComfortBandLower", "SCC14", 42),
     ]
 
     checks = [
@@ -283,11 +283,6 @@ class CarState(CarStateBase):
       ("CGW4", 5),
       ("WHL_SPD11", 50),
     ]
-    if CP.sccBus == 0 and CP.enableCruise:
-      checks += [
-        ("SCC11", 50),
-        ("SCC12", 50),
-      ]
     if not CP.mdpsBus:
       signals += [
         ("CR_Mdps_StrColTq", "MDPS12", 0),
