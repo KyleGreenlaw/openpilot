@@ -225,16 +225,16 @@ class CarState(CarStateBase):
       ("CF_Lca_IndLeft", "LCA11", 0),
       ("CF_Lca_IndRight", "LCA11", 0),
 
-      ("MainMode_ACC", "SCC11", 1),
+      ("MainMode_ACC", "SCC11", 0),
       ("SCCInfoDisplay", "SCC11", 0),
       ("AliveCounterACC", "SCC11", 0),
       ("VSetDis", "SCC11", 0),
       ("ObjValid", "SCC11", 0),
       ("DriverAlertDisplay", "SCC11", 0),
-      ("TauGapSet", "SCC11", 2),
+      ("TauGapSet", "SCC11", 0),
       ("ACC_ObjStatus", "SCC11", 0),
       ("ACC_ObjLatPos", "SCC11", 0),
-      ("ACC_ObjDist", "SCC11", 204), #TK211X value is 204.6
+      ("ACC_ObjDist", "SCC11", 0), #TK211X value is 204.6
       ("ACC_ObjRelSpd", "SCC11", 0),
       ("Navi_SCC_Curve_Status", "SCC11", 0),
       ("Navi_SCC_Curve_Act", "SCC11", 0),
@@ -255,7 +255,7 @@ class CarState(CarStateBase):
       ("aReqRaw", "SCC12", 0), #aReqMax
       ("TakeOverReq", "SCC12", 0),
       ("PreFill", "SCC12", 0),
-      ("aReqValue", "SCC12", -10.23), #aReqMin
+      ("aReqValue", "SCC12", 0), #aReqMin
       ("CF_VSM_ConfMode", "SCC12", 0),
       ("AEB_Failinfo", "SCC12", 0),
       ("AEB_Status", "SCC12", 0),
@@ -264,15 +264,15 @@ class CarState(CarStateBase):
       ("CR_VSM_Alive", "SCC12", 0),
       ("CR_VSM_ChkSum", "SCC12", 0),
       
-      ("SCCDrvModeRValue", "SCC13", 3),
-      ("SCC_Equip", "SCC13", 1),
+      ("SCCDrvModeRValue", "SCC13", 0),
+      ("SCC_Equip", "SCC13", 0),
       ("AebDrvSetStatus", "SCC13", 0),
 
-      ("JerkUpperLimit", "SCC14", 42),
-      ("JerkLowerLimit", "SCC14", 42),
+      ("JerkUpperLimit", "SCC14", 0),
+      ("JerkLowerLimit", "SCC14", 0),
       ("SCCMode2", "SCC14", 0),
-      ("ComfortBandUpper", "SCC14", 3),
-      ("ComfortBandLower", "SCC14", 1),
+      ("ComfortBandUpper", "SCC14", 0),
+      ("ComfortBandLower", "SCC14", 0),
       ("ObjGap", "SCC14", 0),
     ]
 
