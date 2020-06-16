@@ -120,7 +120,7 @@ def create_scc11(packer, frame, enabled, set_speed, lead_visible, scc_live, scc1
 
   return packer.make_can_msg("SCC11", 0, values)
 
-def create_scc13(packer, scc13):
+def create_scc13(packer,enabled, scc13):
   values = scc13
   values["SCCDrvModeRValue"] = 3 if enabled else 0
   values["SCC_Equip"] = 1 if enabled else 0
