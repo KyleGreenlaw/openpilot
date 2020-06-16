@@ -128,8 +128,8 @@ def create_scc13(packer,enabled, scc13):
 
 def create_scc14(packer, enabled, scc14):
   values = scc14
-  values["JerkUpperLimit"] = 42 if enabled else 0
-  values["JerkLowerLimit"] = 42 if enabled else 0
+  values["JerkUpperLimit"] = 45 if enabled else 0
+  values["JerkLowerLimit"] = 40 if enabled else 0
   values["ComfortBandUpper"] = 3.20 if enabled else 0
   values["ComfortBandLower"] = 1 if enabled else 0
 
