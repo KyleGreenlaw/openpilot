@@ -272,7 +272,7 @@ class CarState(CarStateBase):
       ("JerkLowerLimit", "SCC14", 42),
       ("SCCMode2", "SCC14", 0),
       ("ComfortBandUpper", "SCC14", 3),
-      ("ComfortBandLower", "SCC14", 0),
+      ("ComfortBandLower", "SCC14", 1),
       ("ObjGap", "SCC14", 0),
     ]
 
