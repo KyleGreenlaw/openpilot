@@ -174,7 +174,7 @@ class CarController():
       can_sends.append(create_scc12(self.packer, apply_accel, enabled, self.scc12_cnt, self.scc_live, CS.scc12))
       can_sends.append(create_scc11(self.packer, frame, enabled, set_speed, lead_visible, self.scc_live, CS.scc11))
     if CS.has_scc13 and frame % 20 == 0:
-      can_sends.append(create_scc13(self.packer, CS.scc13))
+      can_sends.append(create_scc13(self.packer, enabled, CS.scc13))
     if CS.has_scc14:
       can_sends.append(create_scc14(self.packer, enabled, CS.scc14))
       self.scc12_cnt += 1
