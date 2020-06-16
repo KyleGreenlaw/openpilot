@@ -68,8 +68,8 @@ def create_scc12(packer, apply_accel, enabled, cnt, scc_live, scc12):
   values["CR_VSM_ChkSum"] = 0
   if not scc_live:
     values["ACCMode"] = 1  if enabled else 0 # 2 if gas padel pressed
-    values["ACCMode"] = -10.23  if enabled else 0 # 2 if gas padel pressed
-
+    values["aReqValue"] = -10.23 if enabled else 0
+    
   dat = packer.make_can_msg("SCC12", 0, values)[2]
   values["CR_VSM_ChkSum"] = 16 - sum([sum(divmod(i, 16)) for i in dat]) % 16
 
@@ -113,6 +113,8 @@ def create_scc11(packer, frame, enabled, set_speed, lead_visible, scc_live, scc1
   if not scc_live:
     values["MainMode_ACC"] = 1
     values["VSetDis"] = set_speed
+    values["TauGapSet"] = 2 if enabled else 0
+    values["ACC_ObjDist"] = 204 if enabled else 0
     values["ObjValid"] = 1 if enabled else 0
     values["ACC_ObjStatus"] = lead_visible
 
@@ -120,14 +122,15 @@ def create_scc11(packer, frame, enabled, set_speed, lead_visible, scc_live, scc1
 
 def create_scc13(packer, scc13):
   values = scc13
-  values["SCC_Equip"] = 1
+  values["SCCDrvModeRValue"] = 3 if enabled else 0
+  values["SCC_Equip"] = 1 if enabled else 0
   return packer.make_can_msg("SCC13", 0, values)
 
 def create_scc14(packer, enabled, scc14):
   values = scc14
-  values["JerkUpperLimit"] = 42
-  values["JerkLowerLimit"] = 42
-  values["ComfortBandUpper"] = 6.2
-  values["ComfortBandLower"] = .24
+  values["JerkUpperLimit"] = 42 if enabled else 0
+  values["JerkLowerLimit"] = 42 if enabled else 0
+  values["ComfortBandUpper"] = 3.20 if enabled else 0
+  values["ComfortBandLower"] = 1 if enabled else 0
 
   return packer.make_can_msg("SCC14", 0, values)
