@@ -293,7 +293,7 @@ class CarInterface(CarInterfaceBase):
     if not self.CC.longcontrol and EventName.pedalPressed in events.events:
       events.events.remove(EventName.pedalPressed)
       
-    # Hadle Distracted Driver + Auto Resume
+    # Handle Distracted Driver + Auto Resume
     if EventName.driverDistracted:
       self.CC.is_distracted = True
       if self.CC.auto_resume_blocked:
