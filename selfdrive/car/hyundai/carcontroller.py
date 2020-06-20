@@ -120,8 +120,6 @@ class CarController():
     if CS.out.vEgo < 60 * CV.KPH_TO_MS and self.car_fingerprint == CAR.HYUNDAI_GENESIS and not CS.mdps_bus:
       lkas_active = 0
 
-    if self.turning_indicator_alert: # set and clear by interface
-      lkas_active = 0
     if self.turning_signal_timer > 0:
       self.turning_signal_timer -= 1
 
