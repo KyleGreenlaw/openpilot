@@ -72,13 +72,13 @@ class CarInterface(CarInterfaceBase):
       ret.lateralTuning.pid.kiBP, ret.lateralTuning.pid.kpBP = [[0.], [0.]]
       ret.lateralTuning.pid.kpV, ret.lateralTuning.pid.kiV = [[0.25], [0.05]]
     elif candidate in [CAR.ELANTRA, CAR.ELANTRA_GT_I30]:
-      ret.lateralTuning.pid.kf = 0.00006
-      ret.mass = 1275. + STD_CARGO_KG
-      ret.wheelbase = 2.7
-      ret.steerRatio = 15.4            # 14 is Stock | Settled Params Learner values are steerRatio: 15.401566348670535
-      tire_stiffness_factor = 0.385    # stiffnessFactor settled on 1.0081302973865127
+      ret.lateralTuning.pid.kf = 0.00005
+      ret.mass = 1411. + STD_CARGO_KG  # Spec Elantra GT Sport
+      ret.wheelbase = 2.65  # Spec Elantra GT Sport
+      ret.steerRatio = 13.4  # Spec Elantra GT Sport
+      tire_stiffness_factor = 0.4
       ret.lateralTuning.pid.kiBP, ret.lateralTuning.pid.kpBP = [[0.], [0.]]
-      ret.lateralTuning.pid.kpV, ret.lateralTuning.pid.kiV = [[0.25], [0.05]]
+      ret.lateralTuning.pid.kpV, ret.lateralTuning.pid.kiV = [[0.19], [0.05]]
       ret.minSteerSpeed = 32 * CV.MPH_TO_MS
     elif candidate == CAR.HYUNDAI_GENESIS:
       ret.lateralTuning.pid.kf = 0.00005
@@ -279,12 +279,6 @@ class CarInterface(CarInterfaceBase):
       ret.leftBlinker = bool(self.CS.left_blinker_flash or self.CS.prev_left_blinker and self.CC.turning_signal_timer)
       ret.rightBlinker = bool(self.CS.right_blinker_flash or self.CS.prev_right_blinker and self.CC.turning_signal_timer)
 
-    # turning indicator alert logic
-    if (ret.leftBlinker or ret.rightBlinker or self.CC.turning_signal_timer) and ret.vEgo < LANE_CHANGE_SPEED_MIN - 1.2:
-      self.CC.turning_indicator_alert = True 
-    else:
-      self.CC.turning_indicator_alert = False
-
     # LKAS button alert logic: reverse on/off
     #if not self.CS.lkas_error and self.CS.lkas_button_on != self.CS.prev_lkas_button_on:
       #self.CC.lkas_button_on = not self.CC.lkas_button_on
@@ -323,12 +317,8 @@ class CarInterface(CarInterfaceBase):
 
     if self.CC.longcontrol and self.CS.cruise_unavail:
       events.add(EventName.brakeUnavailable)
-    if abs(ret.steeringAngle) > 90. and EventName.steerTempUnavailable not in events.events:
-      events.add(EventName.steerTempUnavailable)
     if self.low_speed_alert and not self.CS.mdps_bus:
       events.add(EventName.belowSteerSpeed)
-    if self.CC.turning_indicator_alert:
-      events.add(EventName.turningIndicatorOn)
     if self.lkas_button_alert:
       events.add(EventName.lkasButtonOff)
     if not self.CC.longcontrol and EventName.pedalPressed in events.events:
