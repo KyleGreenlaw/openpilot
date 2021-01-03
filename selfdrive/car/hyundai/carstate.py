@@ -125,7 +125,7 @@ class CarState(CarStateBase):
 
     # TODO: Find brake pressure
     ret.brake = 0
-    ret.brakePressed = 0
+    ret.brakePressed = cp.vl["TCS13"]['DriverBraking'] != 0
     self.brakeUnavailable = cp.vl["TCS13"]['ACCEnable'] == 3
 
     # TODO: Check this
@@ -138,7 +138,7 @@ class CarState(CarStateBase):
     elif self.CP.emsAvailable:
       ret.gas = cp.vl["EMS12"]['PV_AV_CAN'] / 100
 
-    ret.gasPressed = 0
+    ret.gasPressed = (cp.vl["TCS13"]["DriverOverride"] == 1)
     if self.CP.emsAvailable:
       ret.gasPressed = ret.gasPressed or bool(cp.vl["EMS16"]["CF_Ems_AclAct"])
 
