@@ -109,7 +109,7 @@ class CarState(CarStateBase):
       if self.cruise_main_button:
         ret.cruiseState.enabled = (cp.vl["CLU11"]["CF_Clu_CruiseSwMain"] == 0)
       else:
-        ret.cruiseState.enabled = (cp.vl["CLU11"]["CF_Clu_CruiseSwMain"] == 0)
+        ret.cruiseState.enabled = True
 
     self.lead_distance = cp_scc.vl["SCC11"]['ACC_ObjDist']
     self.vrelative = cp_scc.vl["SCC11"]['ACC_ObjRelSpd']
