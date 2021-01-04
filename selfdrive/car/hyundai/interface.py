@@ -202,12 +202,12 @@ class CarInterface(CarInterfaceBase):
 
     if candidate in [ CAR.HYUNDAI_GENESIS, CAR.IONIQ_EV_LTD, CAR.IONIQ_HEV, CAR.KONA_EV, CAR.KIA_NIRO_EV, CAR.KIA_SORENTO, CAR.SONATA_2019,
                       CAR.KIA_OPTIMA, CAR.VELOSTER, CAR.KIA_STINGER, CAR.GENESIS_G70, CAR.SONATA_HEV, CAR.SANTA_FE, CAR.GENESIS_G80,
-                      CAR.GENESIS_G90, CAR.KIA_CADENZA, CAR.KIA_CADENZA_HEV, CAR.ELANTRA_GT_I30]:
+                      CAR.GENESIS_G90, CAR.KIA_CADENZA, CAR.KIA_CADENZA_HEV]:
       ret.safetyModel = car.CarParams.SafetyModel.hyundaiLegacy
 
     if ret.mdpsHarness or \
             (candidate in [CAR.KIA_OPTIMA_HEV, CAR.SONATA_HEV, CAR.IONIQ_HEV, CAR.SONATA_HEV_2019,
-                          CAR.KIA_CADENZA_HEV, CAR.GRANDEUR_HEV, CAR.KIA_NIRO_HEV, CAR.KONA_HEV]):
+                          CAR.KIA_CADENZA_HEV, CAR.GRANDEUR_HEV, CAR.KIA_NIRO_HEV, CAR.KONA_HEV, CAR.ELANTRA_GT_I30]):
       ret.safetyModel = car.CarParams.SafetyModel.hyundaiCommunity
 
     if ret.radarOffCan or (ret.sccBus == 2) or Params().get('EnableOPwithCC') == b'0':
@@ -275,7 +275,7 @@ class CarInterface(CarInterfaceBase):
       self.CP.enableCruise = self.CC.usestockscc
 
     if self.enabled_prev and not self.CC.enabled and not self.CP.enableCruise:
-      ret.cruiseState.enabled = False
+      ret.cruiseState.enabled = True
     self.enabled_prev = self.CC.enabled
 
     if self.CS.brakeHold and not self.CC.usestockscc:
