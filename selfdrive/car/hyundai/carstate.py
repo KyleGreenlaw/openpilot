@@ -129,7 +129,7 @@ class CarState(CarStateBase):
     self.brakeUnavailable = cp.vl["TCS13"]['ACCEnable'] == 3
 
     # TODO: Check this
-    ret.brakeLights = bool(cp.vl["TCS13"]['BrakeLight'] or ret.brakePressed)
+    ret.brakeLights = False #bool(cp.vl["TCS13"]['BrakeLight'] or ret.brakePressed)
 
     if self.CP.carFingerprint in ELEC_VEH:
       ret.gas = cp.vl["E_EMS11"]['Accel_Pedal_Pos'] / 256.
