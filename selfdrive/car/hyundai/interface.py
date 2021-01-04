@@ -274,9 +274,9 @@ class CarInterface(CarInterfaceBase):
     if self.CP.sccBus == 2:
       self.CP.enableCruise = self.CC.usestockscc
 
-    #if self.enabled_prev and not self.CC.enabled and not self.CP.enableCruise:
-      #ret.cruiseState.enabled = False
-    #self.enabled_prev = self.CC.enabled
+    if self.enabled_prev and not self.CC.enabled and not self.CP.enableCruise:
+      ret.cruiseState.enabled = False
+    self.enabled_prev = self.CC.enabled
 
     if self.CS.brakeHold and not self.CC.usestockscc:
       events.add(EventName.brakeHold)
