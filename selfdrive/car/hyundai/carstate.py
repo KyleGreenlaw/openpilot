@@ -105,7 +105,7 @@ class CarState(CarStateBase):
       ret.cruiseState.available = True
       ret.cruiseState.enabled = self.allow_nonscc_available != 0
     elif not self.CP.radarOffCan:
-      ret.cruiseState.available = True
+      ret.cruiseState.available = (cp_scc.vl["SCC11"]["MainMode_ACC"] != 0)
       ret.cruiseState.enabled = cp.vl["CLU11"]["CF_Clu_CruiseSwMain"]
 
     self.lead_distance = cp_scc.vl["SCC11"]['ACC_ObjDist']
