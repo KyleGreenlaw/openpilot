@@ -328,7 +328,7 @@ class CarInterface(CarInterfaceBase):
           events.add(EventName.pcmEnable)
         if b.type == ButtonType.cancel and b.pressed or self.CS.lkasbutton and opParams().get('enableLKASbutton'):
           events.add(EventName.buttonCancel)
-          events.add(EventName.pcmDisable)
+          events.add(EventName.pcmEnable)
         if b.type == ButtonType.altButton3 and b.pressed:
           events.add(EventName.buttonCancel)
           events.add(EventName.pcmDisable)
