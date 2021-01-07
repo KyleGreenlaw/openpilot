@@ -234,7 +234,7 @@ static void update_line_data(UIState *s, const cereal::ModelDataV2::XYZTData::Re
 
 static void ui_draw_vision_lane_lines(UIState *s) {
   const UIScene *scene = &s->scene;
-  NVGcolor *color;
+  NVGcolor color;
 	
   // paint lanelines
   line_vertices_data *pvd_ll = &s->lane_line_vertices[0];
