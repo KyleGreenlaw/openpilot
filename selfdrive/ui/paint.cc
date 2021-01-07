@@ -243,9 +243,9 @@ static void ui_draw_vision_lane_lines(UIState *s) {
       update_line_data(s, scene->model.getLaneLines()[ll_idx], 0.025*scene->model.getLaneLineProbs()[ll_idx], pvd_ll + ll_idx, scene->max_distance);
     }
     if (scene->leftblindspot) {
-      color = nvgRGBAf(1.0, 0.6, 0, scene->lane_line_probs[ll_idx]);
+      color = nvgRGBAf(1.0, 0.6, 0, scene->lane_line_probs[2]);
     } else if (scene->rightblindspot) {
-      color = nvgRGBAf(1.0, 0.6, 0, scene->lane_line_probs[ll_idx]);
+      color = nvgRGBAf(1.0, 0.6, 0, scene->lane_line_probs[3]);
     } else {
       color = nvgRGBAf(1.0, 1.0, 1.0, scene->lane_line_probs[ll_idx]);
     }
