@@ -234,7 +234,8 @@ static void update_line_data(UIState *s, const cereal::ModelDataV2::XYZTData::Re
 
 static void ui_draw_vision_lane_lines(UIState *s) {
   const UIScene *scene = &s->scene;
-
+  NVGcolor *color;
+	
   // paint lanelines
   line_vertices_data *pvd_ll = &s->lane_line_vertices[0];
   for (int ll_idx = 0; ll_idx < 4; ll_idx++) {
@@ -242,11 +243,11 @@ static void ui_draw_vision_lane_lines(UIState *s) {
       update_line_data(s, scene->model.getLaneLines()[ll_idx], 0.025*scene->model.getLaneLineProbs()[ll_idx], pvd_ll + ll_idx, scene->max_distance);
     }
     if (scene->leftblindspot) {
-      NVGcolor color = nvgRGBAf(1.0, 0.6, 0, scene->lane_line_probs[ll_idx[2]]);
+      color = nvgRGBAf(1.0, 0.6, 0, scene->lane_line_probs[ll_idx]);
     } else if (scene->rightblindspot) {
-      NVGcolor color = nvgRGBAf(1.0, 0.6, 0, scene->lane_line_probs[ll_idx[3]]);
+      color = nvgRGBAf(1.0, 0.6, 0, scene->lane_line_probs[ll_idx]);
     } else {
-      NVGcolor color = nvgRGBAf(1.0, 1.0, 1.0, scene->lane_line_probs[ll_idx]);
+      color = nvgRGBAf(1.0, 1.0, 1.0, scene->lane_line_probs[ll_idx]);
     }
     ui_draw_line(s, (pvd_ll + ll_idx)->v, (pvd_ll + ll_idx)->cnt, &color, nullptr);
   }
