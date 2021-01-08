@@ -248,11 +248,11 @@ static void ui_draw_vision_lane_lines(UIState *s) {
           color = nvgRGBAf(1.0, 0.6, 1.0, scene->lane_line_probs[ll_idx]);
 	} else {
           color = nvgRGBAf(1.0, 1.0, 1.0, scene->lane_line_probs[ll_idx]);
-	} if (ll_idx == 0 || ll_idx == 1) {
-          color = nvgRGBAf(1.0, 0.6, 0.0, scene->lane_line_probs[ll_idx]);
-        } else {
-          color = nvgRGBAf(1.0, 1.0, 1.0, scene->lane_line_probs[ll_idx]);
-        }
+	} 
+      } else if (ll_idx == 0 || ll_idx == 1) {
+        color = nvgRGBAf(1.0, 0.6, 0.0, scene->lane_line_probs[ll_idx]);
+      } else {
+        color = nvgRGBAf(1.0, 1.0, 1.0, scene->lane_line_probs[ll_idx]);
       }
     } else if (scene->rightblindspot) {
       if (scene->rightBlinker) {
@@ -262,11 +262,11 @@ static void ui_draw_vision_lane_lines(UIState *s) {
           color = nvgRGBAf(1.0, 0.6, 1.0, scene->lane_line_probs[ll_idx]);
 	} else {
           color = nvgRGBAf(1.0, 1.0, 1.0, scene->lane_line_probs[ll_idx]);
-	} if (ll_idx == 2 || ll_idx == 3) {
-          color = nvgRGBAf(1.0, 0.6, 0.0, scene->lane_line_probs[ll_idx]);
-        } else {
-          color = nvgRGBAf(1.0, 1.0, 1.0, scene->lane_line_probs[ll_idx]);
-        }
+	} 
+      } else if (ll_idx == 2 || ll_idx == 3) {
+        color = nvgRGBAf(1.0, 0.6, 0.0, scene->lane_line_probs[ll_idx]);
+      } else {
+        color = nvgRGBAf(1.0, 1.0, 1.0, scene->lane_line_probs[ll_idx]);
       }
     } else {
       color = nvgRGBAf(1.0, 1.0, 1.0, scene->lane_line_probs[ll_idx]);
