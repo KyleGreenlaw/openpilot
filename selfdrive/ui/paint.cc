@@ -233,6 +233,7 @@ static void update_line_data(UIState *s, const cereal::ModelDataV2::XYZTData::Re
 static void ui_draw_vision_lane_lines(UIState *s) {
   const UIScene *scene = &s->scene;
   NVGcolor color;
+  bool is_engaged = (s->status == STATUS_ENGAGED) && !s->scene.steerOverride;
 	
   // paint lanelines
   line_vertices_data *pvd_ll = &s->lane_line_vertices[0];
@@ -241,7 +242,7 @@ static void ui_draw_vision_lane_lines(UIState *s) {
       update_line_data(s, scene->model.getLaneLines()[ll_idx], 0.025*scene->model.getLaneLineProbs()[ll_idx], pvd_ll + ll_idx, scene->max_distance);
     }
     if (scene->leftblindspot) {
-      if (scene->leftBlinker) {
+      if (scene->leftBlinker && !is_engaged) {
         if (ll_idx == 1) {
           color = nvgRGBAf(1.0, 0.0, 0.0, scene->lane_line_probs[ll_idx]);
         } else if (ll_idx == 0) {
@@ -255,7 +256,7 @@ static void ui_draw_vision_lane_lines(UIState *s) {
         color = nvgRGBAf(1.0, 1.0, 1.0, scene->lane_line_probs[ll_idx]);
       }
     } else if (scene->rightblindspot) {
-      if (scene->rightBlinker) {
+      if (scene->rightBlinker && !is_engaged) {
         if (ll_idx == 2) {
           color = nvgRGBAf(1.0, 0.0, 0.0, scene->lane_line_probs[ll_idx]);
         } else if  (ll_idx == 2) {
@@ -353,51 +354,9 @@ static void ui_draw_vision_speed(UIState *s) {
   const int viz_speed_w = 280;
   const int viz_speed_x = viz_rect.centerX() - viz_speed_w/2;
 
-  // turning blinker from kegman
-  if(scene->leftBlinker) {
-    nvgBeginPath(s->vg);
-    nvgMoveTo(s->vg, viz_speed_x, viz_rect.y + header_h/4);
-    nvgLineTo(s->vg, viz_speed_x - viz_speed_w/2, viz_rect.y + header_h/4 + header_h/4);
-    nvgLineTo(s->vg, viz_speed_x, viz_rect.y + header_h/2 + header_h/4);
-    nvgClosePath(s->vg);
-    nvgFillColor(s->vg, nvgRGBA(23,134,68,scene->blinker_blinkingrate>=50?210:60));
-    nvgFill(s->vg);
-  }
-  if(scene->rightBlinker) {
-    nvgBeginPath(s->vg);
-    nvgMoveTo(s->vg, viz_speed_x+viz_speed_w, viz_rect.y + header_h/4);
-    nvgLineTo(s->vg, viz_speed_x+viz_speed_w + viz_speed_w/2, viz_rect.y + header_h/4 + header_h/4);
-    nvgLineTo(s->vg, viz_speed_x+viz_speed_w, viz_rect.y + header_h/2 + header_h/4);
-    nvgClosePath(s->vg);
-    nvgFillColor(s->vg, nvgRGBA(23,134,68,scene->blinker_blinkingrate>=50?210:60));
-    nvgFill(s->vg);
-    }
-  if(scene->leftBlinker || scene->rightBlinker) {
-    s->scene.blinker_blinkingrate -= 3;
-    if(scene->blinker_blinkingrate<0) s->scene.blinker_blinkingrate = 120;
-  }
-  if(scene->leftblindspot) {
-    nvgBeginPath(s->vg);
-    nvgMoveTo(s->vg, viz_speed_x, viz_rect.y + header_h/4);
-    nvgLineTo(s->vg, viz_speed_x - viz_speed_w/2, viz_rect.y + header_h/4 + header_h/4);
-    nvgLineTo(s->vg, viz_speed_x, viz_rect.y + header_h/2 + header_h/4);
-    nvgClosePath(s->vg);
-    nvgFillColor(s->vg, nvgRGBA(255,0,0,210));
-    nvgFill(s->vg);
-  }
-  if(scene->rightblindspot) {
-    nvgBeginPath(s->vg);
-    nvgMoveTo(s->vg, viz_speed_x+viz_speed_w, viz_rect.y + header_h/4);
-    nvgLineTo(s->vg, viz_speed_x+viz_speed_w + viz_speed_w/2, viz_rect.y + header_h/4 + header_h/4);
-    nvgLineTo(s->vg, viz_speed_x+viz_speed_w, viz_rect.y + header_h/2 + header_h/4);
-    nvgClosePath(s->vg);
-    nvgFillColor(s->vg, nvgRGBA(255,0,0,210));
-    nvgFill(s->vg);
-    }
-
   nvgTextAlign(s->vg, NVG_ALIGN_CENTER | NVG_ALIGN_BASELINE);
   ui_draw_text(s->vg, s->scene.viz_rect.centerX(), 240, speed_str.c_str(), 96 * 2.5, COLOR_WHITE, s->font_sans_bold);
-  ui_draw_text(s->vg, s->scene.viz_rect.centerX(), 320, s->is_metric ? "km/h" : "mph", 36 * 2.5, COLOR_YELLOW_ALPHA(200), s->font_sans_regular);
+  ui_draw_text(s->vg, s->scene.viz_rect.centerX(), 320, s->is_metric ? "km/h" : "mph", 36 * 2.5, COLOR_WHITE, s->font_sans_regular);
 }
 
 static void ui_draw_vision_event(UIState *s) {
