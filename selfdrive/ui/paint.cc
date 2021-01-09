@@ -185,9 +185,41 @@ static void draw_frame(UIState *s) {
 
 static void ui_draw_vision_lane_lines(UIState *s) {
   const UIScene &scene = s->scene;
+  bool is_engaged = (s->status == STATUS_ENGAGED) && !s->scene.steerOverride;
+
   // paint lanelines
-  for (int i = 0; i < std::size(scene.lane_line_vertices); i++) {
-    NVGcolor color = nvgRGBAf(1.0, 1.0, 1.0, scene.lane_line_probs[i]);
+  for (int i = 0; i < 4; i++) {
+    if (scene->leftblindspot) {
+      if (scene->leftBlinker && !is_engaged) {
+        if (i == 1) {
+          NVGcolor color = nvgRGBAf(1.0, 0.0, 0.0, scene.lane_line_probs[i]);
+        } else if (i == 0) {
+          NVGcolor color = nvgRGBAf(1.0, 0.6, 1.0, scene.lane_line_probs[i]);
+	} else {
+          NVGcolor color = nvgRGBAf(1.0, 1.0, 1.0, scene.lane_line_probs[i]);
+	} 
+      } else if (i == 0 || i == 1) {
+        NVGcolor color = nvgRGBAf(1.0, 0.6, 0.0, scene.lane_line_probs[i);
+      } else {
+        NVGcolor color = nvgRGBAf(1.0, 1.0, 1.0, scene.lane_line_probs[i]);
+      }
+    } else if (scene->rightblindspot) {
+      if (scene->rightBlinker && !is_engaged) {
+        if (i == 2) {
+          NVGcolor color = nvgRGBAf(1.0, 0.0, 0.0, scene.lane_line_probs[i]);
+        } else if  (i == 2) {
+          NVGcolor color = nvgRGBAf(1.0, 0.6, 1.0, scene.lane_line_probs[i]);
+	} else {
+          NVGcolor color = nvgRGBAf(1.0, 1.0, 1.0, scene.lane_line_probs[i]);
+	} 
+      } else if (i == 2 || i == 3) {
+        NVGcolor color = nvgRGBAf(1.0, 0.6, 0.0, scene.lane_line_probs[i]);
+      } else {
+        NVGcolor color = nvgRGBAf(1.0, 1.0, 1.0, scene.lane_line_probs[i]);
+      }
+    } else {
+      NVGcolor color = nvgRGBAf(1.0, 1.0, 1.0, scene.lane_line_probs[i]);
+    }
     ui_draw_line(s, scene.lane_line_vertices[i].v, scene.lane_line_vertices[i].cnt, &color, nullptr);
   }
 
