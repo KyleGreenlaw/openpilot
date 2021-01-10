@@ -200,7 +200,7 @@ static void ui_draw_vision_lane_lines(UIState *s) {
           color = nvgRGBAf(1.0, 1.0, 1.0, scene.lane_line_probs[i]);
 	} 
       } else if (i == 0 || i == 1) {
-        color = nvgRGBAf(1.0, 0.6, 0.0, scene.lane_line_probs[i);
+        color = nvgRGBAf(1.0, 0.6, 0.0, scene.lane_line_probs[i]);
       } else {
         color = nvgRGBAf(1.0, 1.0, 1.0, scene.lane_line_probs[i]);
       }
