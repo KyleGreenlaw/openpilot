@@ -190,8 +190,8 @@ static void ui_draw_vision_lane_lines(UIState *s) {
 	
   // paint lanelines
   for (int i = 0; i < 4; i++) {
-    if (scene->leftblindspot) {
-      if (scene->leftBlinker && !is_engaged) {
+    if (scene.leftblindspot) {
+      if (scene.leftBlinker && !is_engaged) {
         if (i == 1) {
           color = nvgRGBAf(1.0, 0.0, 0.0, scene.lane_line_probs[i]);
         } else if (i == 0) {
@@ -204,8 +204,8 @@ static void ui_draw_vision_lane_lines(UIState *s) {
       } else {
         color = nvgRGBAf(1.0, 1.0, 1.0, scene.lane_line_probs[i]);
       }
-    } else if (scene->rightblindspot) {
-      if (scene->rightBlinker && !is_engaged) {
+    } else if (scene.rightblindspot) {
+      if (scene.rightBlinker && !is_engaged) {
         if (i == 2) {
           color = nvgRGBAf(1.0, 0.0, 0.0, scene.lane_line_probs[i]);
         } else if  (i == 2) {
