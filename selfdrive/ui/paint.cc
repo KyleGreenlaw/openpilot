@@ -290,13 +290,11 @@ static void ui_draw_vision_maxspeed(UIState *s) {
 
 static void ui_draw_vision_speed(UIState *s) {
   const Rect &viz_rect = s->scene.viz_rect;
-  const UIScene *scene = &s->scene;
-
+ 
   const float speed = std::max(0.0, s->scene.controls_state.getVEgo() * (s->is_metric ? 3.6 : 2.2369363));
   const std::string speed_str = std::to_string((int)std::nearbyint(speed));
 
   const int viz_speed_w = 280;
-  const int viz_speed_x = viz_rect.centerX() - viz_speed_w/2;
 
   nvgTextAlign(s->vg, NVG_ALIGN_CENTER | NVG_ALIGN_BASELINE);
   ui_draw_text(s->vg, s->scene.viz_rect.centerX(), 240, speed_str.c_str(), 96 * 2.5, COLOR_WHITE, s->font_sans_bold);
