@@ -262,6 +262,9 @@ FW_VERSIONS = {
   CAR.KIA_SELTOS: {
     (Ecu.eps, 0x7d4, None): [b'\xf1\000SP2 MDPS C 1.00 1.04 56300Q5200          ',],
   },
+  CAR.ELANTRA_GT_I30: {
+    (Ecu.eps, 0x7d4, None): [b'\xf1\x00PD  MDPS C 1.00 1.02 56310G3300\x00 4PDDC102'],
+  },
 }
 
 CHECKSUM = {
@@ -278,7 +281,7 @@ FEATURES = {
   "send_lfa_mfa": set([CAR.SONATA, CAR.PALISADE, CAR.SONATA_HEV, CAR.SANTA_FE, CAR.KIA_NIRO_EV, CAR.KONA_EV, CAR.KONA,
                        CAR.KONA_HEV, CAR.IONIQ_HEV, CAR.IONIQ_EV_LTD, CAR.KIA_SELTOS]),
 
-  "allow_high_steer": set([CAR.KONA, CAR.KONA_EV, CAR.KONA_HEV, CAR.KIA_NIRO_EV]),
+  "allow_high_steer": set([CAR.KONA, CAR.KONA_EV, CAR.KONA_HEV, CAR.KIA_NIRO_EV, CAR.ELANTRA_GT_I30]),
 }
 
 ELEC_VEH = set([CAR.IONIQ_EV_LTD, CAR.KONA_EV, CAR.KIA_NIRO_EV])
